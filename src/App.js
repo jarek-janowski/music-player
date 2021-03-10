@@ -1,21 +1,39 @@
+// import {useState} from 'react'
+
+import { useState } from 'react';
 import './App.css';
+
 import Yesterday from './audio/Borgeous & Zaeden - Yesterday (ak9 & MIDIcal Remix).mp3'
 import Ghost from './audio/Oliver Heldens feat. RUMORS - Ghost.mp3'
 
 const SongPlayer = ({song}) =>{
+  const {audioUrl, coverUrl, title} = song;
   return(
     <section>
       <h1>Music player</h1>
       <img 
         width="250px" 
         height="250px" 
-        src={song.coverUrl} 
-        alt={`${song.title} cover`}/>
-      <audio key={song.coverUrl} controls>
-        <source src={song.audioUrl}/>
+        src={coverUrl} 
+        alt={`${title} cover`}/>
+      <audio key={coverUrl} controls>
+        <source src={audioUrl}/>
       </audio>
     </section>
   )
+}
+
+function SongListItem({ song, isCurrent, onSelect }) {
+  const background = isCurrent ? "lightgreen" : "none";
+  const style = { background };
+  const handleClick = () =>{
+    onSelect(song)
+  } 
+  return (
+    <li style={style} onClick={handleClick}>
+      {song.title} by {song.artist}
+    </li>
+  );
 }
 
 function App() {
@@ -33,7 +51,17 @@ function App() {
       artist: "Oliver Heldens feat. RUMORS"
       },
   ]
-  const currentSong = songs[1];
+
+  const [currentSongIndex, setCurrentSongIndex] = useState(0)
+  const currentSong = songs[currentSongIndex]
+  const handleSelectSong = (selectedSong) =>{
+    const audioIndex = songs.findIndex(
+      song => song.audioUrl === selectedSong.audioUrl)
+  
+  if (audioIndex >= 0) {
+    setCurrentSongIndex(audioIndex)
+  }
+  }
   return (
     <div className="App">
       <SongPlayer song={currentSong}/>
@@ -45,19 +73,12 @@ function App() {
               key={song.coverUrl} 
               song={song}
               isCurrent={song.audioUrl === currentSong.audioUrl}
+              onSelect={handleSelectSong}
             />))}
         </ul>
       </section>
     </div>
   );
-}
-
-const SongListItem = ({song, isCurrent}) =>{
-  return(
-    <li style={{background: isCurrent ? "lightgreen" : "none"}}>
-      {song.title} by {song.artist}
-    </li>
-  )
 }
 
 export default App;
