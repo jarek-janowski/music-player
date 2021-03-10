@@ -1,12 +1,12 @@
-// import {useState} from 'react'
+import { useState, useRef } from 'react';
 
-import { useState } from 'react';
 import './App.css';
 
 import Yesterday from './audio/Borgeous & Zaeden - Yesterday (ak9 & MIDIcal Remix).mp3'
 import Ghost from './audio/Oliver Heldens feat. RUMORS - Ghost.mp3'
 
 const SongPlayer = ({song}) =>{
+  const audioRef = useRef();
   const {audioUrl, coverUrl, title} = song;
   return(
     <section>
@@ -16,9 +16,13 @@ const SongPlayer = ({song}) =>{
         height="250px" 
         src={coverUrl} 
         alt={`${title} cover`}/>
-      <audio key={coverUrl} controls>
+      <audio ref={audioRef} key={coverUrl} controls>
         <source src={audioUrl}/>
       </audio>
+      <div>
+        <button onClick={() => audioRef.current.play()}>Play</button>
+        <button onClick={() => audioRef.current.pause()}>Pause</button>
+      </div>
     </section>
   )
 }
