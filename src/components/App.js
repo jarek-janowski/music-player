@@ -21,20 +21,40 @@ function App() {
   },[])
   const [currentSongIndex, setCurrentSongIndex] = useState(0)
   const currentSong = songs[currentSongIndex]
+
   const handleSelectSong = (selectedSong) =>{
     const audioIndex = songs.findIndex(
       song => song.preview === selectedSong.preview)
-  
-  if (audioIndex >= 0) {
-    setCurrentSongIndex(audioIndex)
+      console.log(audioIndex)
+    if (audioIndex >= 0) {
+      setCurrentSongIndex(audioIndex)
+    }
   }
+
+  const handleNextSong = (selectedSong) =>{
+    const audioIndex = songs.findIndex(
+      song => song.preview === selectedSong.preview);
+    const nextAudio = audioIndex >= songs.length - 1 ? audioIndex + 0 : audioIndex + 1 
+      setCurrentSongIndex(nextAudio)  
   }
+
+  const handlePrevSong = (selectedSong) =>{
+    const audioIndex = songs.findIndex(
+      song => song.preview === selectedSong.preview);
+    const prevAudio = audioIndex <= 0 ? audioIndex + 0 : audioIndex - 1 
+    setCurrentSongIndex(prevAudio)
+  }
+
   return (
     <div className="App">
       {songs.length === 0 
       ? "Loading..." 
       :<>
-        <SongPlayer song={currentSong}/>
+        <SongPlayer 
+          song={currentSong} 
+          nextSong={handleNextSong}
+          prevSong={handlePrevSong}
+        />
         <Songs 
           songs={songs} 
           currentSong={currentSong} 

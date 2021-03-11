@@ -1,8 +1,9 @@
 import { useRef } from 'react';
 
-const SongPlayer = ({ song }) => {
+const SongPlayer = ({ song, nextSong, prevSong }) => {
   const audioRef = useRef();
   const { preview, album, title } = song;
+
   return (
     <section>
       <h1>Music player</h1>
@@ -15,8 +16,10 @@ const SongPlayer = ({ song }) => {
         <source src={preview} />
       </audio>
       <div>
+        <button onClick={() => prevSong(song)}>Prev</button>
         <button onClick={() => audioRef.current.play()}>Play</button>
         <button onClick={() => audioRef.current.pause()}>Pause</button>
+        <button onClick={() => nextSong(song)}>Next</button>
       </div>
     </section>
   );
