@@ -1,9 +1,28 @@
-import { useRef } from 'react';
+import { useState, useRef, useEffect} from 'react';
 
 const SongPlayer = ({ song, nextSong, prevSong }) => {
-  const audioRef = useRef();
   const { preview, album, title } = song;
-
+  
+  const audioRef = useRef();
+  console.log(audioRef)
+  const [currentTime, setCurrentTime] = useState("0:00")
+  const [duration, setDuration] = useState("0:00")
+  
+  useEffect(() => {
+    
+      const updateTime = () =>{
+        const parseTime = time => {
+          const seconds = String(Math.floor(time % 60) || 0).padStart('2', '0');
+          const minutes = String(Math.floor(time / 60) || 0).padStart('1', '0');
+          return `${minutes}:${seconds}`
+        }
+        const {currentTime, duration} = audioRef.current
+        setCurrentTime(parseTime(currentTime))
+        setDuration(parseTime(duration))
+      }
+      audioRef.current.addEventListener("timeupdate", updateTime);
+  },);
+  
   return (
     <section>
       <h1>Music player</h1>
@@ -21,6 +40,7 @@ const SongPlayer = ({ song, nextSong, prevSong }) => {
         <button onClick={() => audioRef.current.pause()}>Pause</button>
         <button onClick={() => nextSong(song)}>Next</button>
       </div>
+      <p>{currentTime} / {duration}</p>
     </section>
   );
 };
