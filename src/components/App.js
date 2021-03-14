@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import fetchJsonp from 'fetch-jsonp'
 
 import './App.css';
@@ -6,6 +6,14 @@ import SongPlayer from './SongPlayer';
 import Songs from './Songs';
 
 function App() {
+  
+  const audioRef = useRef();
+  window.onload = onLoad
+  function onLoad() {
+    console.log("po refreshu")
+    audioRef.current.pause()
+  }
+
   const URL = "https://api.deezer.com/playlist/8823756962/tracks?output=jsonp"
   const [songs, setSongs] = useState([]);
   useEffect(() => {
@@ -21,11 +29,11 @@ function App() {
   },[])
   const [currentSongIndex, setCurrentSongIndex] = useState(0)
   const currentSong = songs[currentSongIndex]
-
+  
   const handleSelectSong = (selectedSong) =>{
     const audioIndex = songs.findIndex(
       song => song.preview === selectedSong.preview)
-      console.log(audioIndex)
+      // console.log(audioIndex)
     if (audioIndex >= 0) {
       setCurrentSongIndex(audioIndex)
     }
@@ -34,14 +42,14 @@ function App() {
   const handleNextSong = (selectedSong) =>{
     const audioIndex = songs.findIndex(
       song => song.preview === selectedSong.preview);
-    const nextAudio = audioIndex >= songs.length - 1 ? audioIndex + 0 : audioIndex + 1 
-      setCurrentSongIndex(nextAudio)  
+    const nextAudio = audioIndex >= songs.length - 1 ? audioIndex - songs.length +1: audioIndex + 1 
+      setCurrentSongIndex(nextAudio)
   }
 
   const handlePrevSong = (selectedSong) =>{
     const audioIndex = songs.findIndex(
       song => song.preview === selectedSong.preview);
-    const prevAudio = audioIndex <= 0 ? audioIndex + 0 : audioIndex - 1 
+    const prevAudio = audioIndex <= 0 ? audioIndex + songs.length -1 : audioIndex - 1 
     setCurrentSongIndex(prevAudio)
   }
 
@@ -50,12 +58,15 @@ function App() {
       {songs.length === 0 
       ? "Loading..." 
       :<>
-        <SongPlayer 
+        <SongPlayer
+          audioRef={audioRef} 
           song={currentSong} 
           nextSong={handleNextSong}
           prevSong={handlePrevSong}
+          handleSelectSong={handleSelectSong}
         />
-        <Songs 
+        <Songs
+          audioRef={audioRef} 
           songs={songs} 
           currentSong={currentSong} 
           handleSelectSong={handleSelectSong}/>

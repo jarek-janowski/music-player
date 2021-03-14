@@ -1,13 +1,10 @@
-import { useState, useRef, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
-const SongPlayer = ({ song, nextSong, prevSong }) => {
+const SongPlayer = ({ song, nextSong, prevSong, audioRef }) => {
   const { preview, album, title } = song;
-  
-  const audioRef = useRef();
-  console.log(audioRef)
   const [currentTime, setCurrentTime] = useState("0:00")
   const [duration, setDuration] = useState("0:00")
-  
+
   useEffect(() => {
     
       const updateTime = () =>{
@@ -16,12 +13,18 @@ const SongPlayer = ({ song, nextSong, prevSong }) => {
           const minutes = String(Math.floor(time / 60) || 0).padStart('1', '0');
           return `${minutes}:${seconds}`
         }
-        const {currentTime, duration} = audioRef.current
+        const {currentTime, duration } = audioRef.current
         setCurrentTime(parseTime(currentTime))
         setDuration(parseTime(duration))
+        if(currentTime >= duration){
+          if(audioRef.current.ended){
+          nextSong(song) 
+          audioRef.current.play()
+          }
+        }
       }
       audioRef.current.addEventListener("timeupdate", updateTime);
-  },);
+  }, [audioRef, nextSong, song]);
   
   return (
     <section>
@@ -31,7 +34,7 @@ const SongPlayer = ({ song, nextSong, prevSong }) => {
         height="250px"
         src={album.cover_medium}
         alt={`${title} cover`} />
-      <audio ref={audioRef} key={album.cover_medium} controls>
+      <audio ref={audioRef} key={album.cover_medium} autoPlay controls>
         <source src={preview} />
       </audio>
       <div>

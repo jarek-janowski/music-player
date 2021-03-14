@@ -1,6 +1,6 @@
 import SongListItem from './SongListItem';
 
-const Songs = ({ songs, currentSong, handleSelectSong }) => {
+const Songs = ({ songs, currentSong, handleSelectSong, audioRef }) => {
   return (
     <section>
       <h2>Songs</h2>
@@ -10,7 +10,8 @@ const Songs = ({ songs, currentSong, handleSelectSong }) => {
             key={song.album.cover_medium}
             song={song}
             isCurrent={song.preview === currentSong.preview}
-            onSelect={handleSelectSong} />))}
+            onSelect={handleSelectSong} 
+            audioRef={audioRef}/>))}
       </ul>
     </section>
   );
