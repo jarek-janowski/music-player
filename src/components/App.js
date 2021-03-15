@@ -43,13 +43,15 @@ function App() {
       song => song.preview === selectedSong.preview);
     const nextAudio = audioIndex >= songs.length - 1 ? audioIndex - songs.length +1: audioIndex + 1 
       setCurrentSongIndex(nextAudio)
+      setIsPaused(false)
   }
 
   const handlePrevSong = (selectedSong) =>{
     const audioIndex = songs.findIndex(
       song => song.preview === selectedSong.preview);
     const prevAudio = audioIndex <= 0 ? audioIndex + songs.length -1 : audioIndex - 1 
-    setCurrentSongIndex(prevAudio)
+    setCurrentSongIndex(prevAudio) 
+    setIsPaused(false)
   }
 
   const handlePlayPauseSong =() =>{

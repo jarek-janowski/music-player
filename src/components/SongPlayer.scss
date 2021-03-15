@@ -44,7 +44,27 @@
 
 }
 
-// .button__wrapper {
-//     display: flex;
-
-// }
+.progress{
+    margin: 0 8px;
+    // padding: 5px 0;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    width: 90%;
+    height: 5px;
+    background: #009FFD;
+    border-radius: 5px;
+    
+    &__bar{
+        // padding: 5px;
+        // width: 50%;
+        // height: 12px;
+        // background: black;
+        & > div {
+            background: #fff;
+            height: 5px;
+            border-radius: 5px;
+            
+        }
+    }
+}
