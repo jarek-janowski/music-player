@@ -1,16 +1,14 @@
 import { useState, useEffect, useRef} from 'react';
 import fetchJsonp from 'fetch-jsonp'
 
-import './App.css';
+import './App.scss';
 import SongPlayer from './SongPlayer';
 import Songs from './Songs';
 
 function App() {
-  
-  const audioRef = useRef();
+  const audioRef = useRef(0);
   window.onload = onLoad
   function onLoad() {
-    console.log("po refreshu")
     audioRef.current.pause()
   }
 
@@ -29,7 +27,8 @@ function App() {
   },[])
   const [currentSongIndex, setCurrentSongIndex] = useState(0)
   const currentSong = songs[currentSongIndex]
-  
+  const [isPaused, setIsPaused] = useState(true)
+
   const handleSelectSong = (selectedSong) =>{
     const audioIndex = songs.findIndex(
       song => song.preview === selectedSong.preview)
@@ -53,6 +52,16 @@ function App() {
     setCurrentSongIndex(prevAudio)
   }
 
+  const handlePlayPauseSong =() =>{
+    if(isPaused){
+      setIsPaused(false)
+      audioRef.current.play()
+    }else if(!isPaused){
+      setIsPaused(true)
+      audioRef.current.pause()
+    }
+  }
+
   return (
     <div className="App">
       {songs.length === 0 
@@ -63,13 +72,17 @@ function App() {
           song={currentSong} 
           nextSong={handleNextSong}
           prevSong={handlePrevSong}
-          handleSelectSong={handleSelectSong}
+          handlePlayPause={handlePlayPauseSong}
+          isPaused={isPaused}
+          
         />
         <Songs
           audioRef={audioRef} 
           songs={songs} 
-          currentSong={currentSong} 
-          handleSelectSong={handleSelectSong}/>
+          currentSong={currentSong}
+          handleSelectSong={handleSelectSong}
+          setIsPaused={setIsPaused}
+          />
       </>}
     </div>
   );

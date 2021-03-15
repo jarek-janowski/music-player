@@ -1,6 +1,6 @@
 import SongListItem from './SongListItem';
 
-const Songs = ({ songs, currentSong, handleSelectSong, audioRef }) => {
+const Songs = ({ songs, currentSong, handleSelectSong, audioRef, setIsPaused }) => {
   return (
     <section>
       <h2>Songs</h2>
@@ -11,7 +11,9 @@ const Songs = ({ songs, currentSong, handleSelectSong, audioRef }) => {
             song={song}
             isCurrent={song.preview === currentSong.preview}
             onSelect={handleSelectSong} 
-            audioRef={audioRef}/>))}
+            setIsPaused={setIsPaused} 
+            audioRef={audioRef}
+          />))}
       </ul>
     </section>
   );
