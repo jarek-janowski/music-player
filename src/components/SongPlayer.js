@@ -7,8 +7,9 @@ const SongPlayer = ({ song, nextSong, prevSong, audioRef, handlePlayPause, isPau
   const [currentTime, setCurrentTime] = useState("0:00")
   const [duration, setDuration] = useState("0:00")
   const [progress, setProgress] = useState(0.2)
+  const [moveProgressBar, setMoveProgressBar] = useState(false)
   const progressRef = useRef()
-  console.log(progress)
+  
   
   const updateTime = () =>{
   
@@ -26,12 +27,37 @@ const SongPlayer = ({ song, nextSong, prevSong, audioRef, handlePlayPause, isPau
       }
     }
   }
+  const startSetProgressBar = (e) =>{
+    setMoveProgressBar(true)
+    setProgressBar(e)
+  }
+
+  const stopSetProgressBar = (e) =>{
+    setMoveProgressBar(false)
+    setProgressBar(e)
+  }
+
+  // window.addEventListener('mousedown', function(e){
+    
+  //     const progress = (e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth;
+  //     setProgress(progress)
+  //     // setMoveProgressBar(true)
+  //   })
 
   const setProgressBar = (e) =>{
-    let progress = (e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth;
+    if(moveProgressBar){
+    const progress = (e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth;
     setProgress(progress)
+    if(!moveProgressBar)
+    window.addEventListener('mousedown', function(e){
+    
+      const progress = (e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth;
+      setProgress(progress)
+      // setMoveProgressBar(true)
+    })
     // console.log(progress)
     // console.log(progressRef.current.offsetLeft, progressRef.current.clientWidth,progressRef.current.offsetWidth, e.clientX)
+    }
   }
   
   
@@ -85,7 +111,14 @@ const SongPlayer = ({ song, nextSong, prevSong, audioRef, handlePlayPause, isPau
         </div>
         <span className="song-player__timer">{duration}</span>
       </div>
-      <div onClick={setProgressBar} className="progress">
+      <div 
+        onClick={setProgressBar}
+        onMouseDown={startSetProgressBar}
+        onMouseMove={setProgressBar}
+        onMouseLeave={stopSetProgressBar} 
+        onMouseUp={stopSetProgressBar}
+        // onMouseOut={startSetProgressBar}
+        className="progress">
         <div ref={progressRef} className="progress__bar">
           <div style={{width: (progress * 100) + '%'}}></div>
         </div>
