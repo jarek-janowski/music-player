@@ -1,12 +1,17 @@
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import fetchJsonp from 'fetch-jsonp'
 
 import './App.scss';
 import SongPlayer from './SongPlayer';
 import Songs from './Songs';
 
+
+
+
 function App() {
-  const audioRef = useRef(0);
+  const audioRef = useRef(null);
+  
+ 
   window.onload = onLoad
   function onLoad() {
     audioRef.current.pause()
