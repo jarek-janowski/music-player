@@ -11,7 +11,7 @@ import Songs from './Songs';
 function App() {
   const audioRef = useRef(null);
   
- 
+ // prevent autoplay on refresh
   window.onload = onLoad
   function onLoad() {
     audioRef.current.pause()

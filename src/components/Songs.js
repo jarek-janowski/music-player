@@ -1,10 +1,14 @@
 import SongListItem from './SongListItem';
+import './Songs.scss'
 
 const Songs = ({ songs, currentSong, handleSelectSong, audioRef, setIsPaused }) => {
+  
   return (
-    <section>
-      <h2>Songs</h2>
-      <ul>
+    <section className="songs">
+      
+      <h2 className="songs__heading">Songs</h2>
+      
+      <ul className="songs__list">
         {songs.map(song => (
           <SongListItem
             key={song.album.cover_medium}

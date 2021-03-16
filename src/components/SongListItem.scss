@@ -1,0 +1,24 @@
+@import '../variables.scss';
+
+.song-list-item{
+    display: flex;
+    font-size: 12px;
+    // flex-direction: column;
+    &__artist{
+        color: $lightgray;
+    }
+    &__image{
+        margin: 8px 0;
+    }
+    &__title{
+        color: $white;
+    }
+}
+
+.title-artist-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 8px;
+    line-height: 1.5
+}
