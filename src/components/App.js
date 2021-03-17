@@ -157,6 +157,8 @@ function App() {
           handlePlayPause={handlePlayPauseSong}
           setIsPaused={setIsPaused}
           isPaused={isPaused}
+          progress={progress}
+          progressRef={progressRef} 
           />
       </>}
     </div>

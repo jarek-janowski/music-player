@@ -38,17 +38,16 @@ const SongPlayer = ({
       <audio ref={audioRef} key={album.cover_medium} autoPlay muted>
         <source src={preview} />
       </audio>
-      <div className="progress-wrapper">
-        <div 
+      <div className="progress-bar">
+        <div
+          ref={progressRef} 
           onClick={setProgressBar}
           onMouseDown={startSetProgressBar}
           onMouseMove={setProgressBar}
           onMouseLeave={stopSetProgressBar} 
           onMouseUp={stopSetProgressBar}
-          className="progress">
-          <div ref={progressRef} className="progress__bar">
-            <div style={{width: (progress * 100) + '%'}}></div>
-          </div>
+          className="progress-bar__container">
+          <div style={{width: (progress * 100) + '%'}}></div>
         </div>
       </div>
       <div className="timers-wrapper">
