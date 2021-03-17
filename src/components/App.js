@@ -81,14 +81,16 @@ function App() {
           prevSong={handlePrevSong}
           handlePlayPause={handlePlayPauseSong}
           isPaused={isPaused}
-          
         />
         <Songs
           audioRef={audioRef} 
+          song={currentSong}
           songs={songs} 
           currentSong={currentSong}
           handleSelectSong={handleSelectSong}
+          handlePlayPause={handlePlayPauseSong}
           setIsPaused={setIsPaused}
+          isPaused={isPaused}
           />
       </>}
     </div>
