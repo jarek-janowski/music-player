@@ -8,8 +8,9 @@ import Songs from './Songs';
 
 function App() {
   const audioRef = useRef(null);
-  const progressRef = useRef(null);
-  
+  const progressRefSongPlayer = useRef(null);
+  const progressRefSongs = useRef(null);
+
  // prevent autoplay on refresh
   window.onload = onLoad
   function onLoad() {
@@ -34,7 +35,8 @@ function App() {
   const [isPaused, setIsPaused] = useState(true)
   const [currentTime, setCurrentTime] = useState("0:00")
   const [duration, setDuration] = useState("0:00")
-  const [progress, setProgress] = useState(0)
+  const [progressSongPlayer, setProgressSongPlayer] = useState(0)
+  const [progressSongs, setProgressSongs] = useState(0)
   const [slideProgressBar, setSlideProgressBar] = useState(false)
   const [progressBarUpdateCurrentTime, setProgressBarUpdateCurrentTime] = useState(false)
   const [progressBarUpdateProgress, setProgressBarUpdateProgress] = useState(false);
@@ -52,17 +54,20 @@ function App() {
 
   if(progressBarUpdateCurrentTime){
     setProgressBarUpdateCurrentTime(false)
-    audioRef.current.currentTime = audioRef.current.duration * progress
+    audioRef.current.currentTime = audioRef.current.duration * progressSongPlayer
   }
   const setProgressBar = (e) =>{
-    if(progressRef !== null){
+    if(progressRefSongPlayer !== null){
       if(slideProgressBar){
-      const progress = (e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth;
-      setProgress(progress)
+        const {offsetLeft, offsetWidth} = progressRefSongPlayer.current
+      const progress = (e.clientX - offsetLeft) / offsetWidth;
+      setProgressSongPlayer(progress)
       setProgressBarUpdateCurrentTime(true);
       }
     }
   }
+
+  
 
   const handleSelectSong = (selectedSong) =>{
     const audioIndex = songs.findIndex(
@@ -119,7 +124,8 @@ function App() {
           audioRef.current.addEventListener("timeupdate", e =>{
             if(!progressBarUpdateCurrentTime){
                 const {currentTime, duration} = audioRef.current
-                setProgress(currentTime/duration)
+                setProgressSongPlayer(currentTime/duration)
+                setProgressSongs(currentTime/duration)
             }
           }) 
         }
@@ -135,7 +141,7 @@ function App() {
       :<>
         <SongPlayer
           audioRef={audioRef}
-          progressRef={progressRef} 
+          progressRef={progressRefSongPlayer} 
           song={currentSong} 
           nextSong={handleNextSong}
           prevSong={handlePrevSong}
@@ -144,7 +150,7 @@ function App() {
           startSetProgressBar={startSetProgressBar}
           stopSetProgressBar={stopSetProgressBar}
           setProgressBar={setProgressBar}
-          progress={progress}
+          progress={progressSongPlayer}
           currentTime={currentTime}
           duration={duration}
         />
@@ -157,8 +163,8 @@ function App() {
           handlePlayPause={handlePlayPauseSong}
           setIsPaused={setIsPaused}
           isPaused={isPaused}
-          progress={progress}
-          progressRef={progressRef} 
+          progress={progressSongs}
+          progressRef={progressRefSongs} 
           />
       </>}
     </div>
