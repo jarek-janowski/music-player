@@ -1,66 +1,21 @@
 import './SongPlayer.scss'
-import { useState, useRef, useEffect } from 'react';
 
-const SongPlayer = ({ song, nextSong, prevSong, handlePlayPause, isPaused, audioRef }) => {
- 
+const SongPlayer = ({ 
+  audioRef,
+  progressRef,
+  song, 
+  nextSong, 
+  prevSong, 
+  handlePlayPause, 
+  isPaused, 
+  startSetProgressBar,
+  stopSetProgressBar,
+  setProgressBar,
+  progress,
+  currentTime,
+  duration }) => {
+    
   const { preview, album, title, artist } = song;
-  const [currentTime, setCurrentTime] = useState("0:00")
-  const [duration, setDuration] = useState("0:00")
-  const [progress, setProgress] = useState(0)
-  const [slideProgressBar, setSlideProgressBar] = useState(false)
-  const [progressBarUpdateCurrentTime, setProgressBarUpdateCurrentTime] = useState(false)
-  const [progressBarUpdateProgress, setProgressBarUpdateProgress] = useState(false);
-  const progressRef = useRef();
-  // console.log(title.length);
-  
-
-  const startSetProgressBar = (e) =>{
-    setSlideProgressBar(true)
-    setProgressBar(e)
-  }
-
-  const stopSetProgressBar = (e) =>{
-    setSlideProgressBar(false)
-    setProgressBar(e)
-  }
-
-  if(progressBarUpdateCurrentTime){
-    setProgressBarUpdateCurrentTime(false)
-    audioRef.current.currentTime = audioRef.current.duration * progress
-  }
-  const setProgressBar = (e) =>{
-    if(slideProgressBar){
-    const progress = (e.clientX - progressRef.current.offsetLeft) / progressRef.current.offsetWidth;
-    setProgress(progress)
-    setProgressBarUpdateCurrentTime(true);
-    }
-  }
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const parseTime = time => {
-        const seconds = String(Math.floor(time % 60) || 0).padStart('2', '0');
-        const minutes = String(Math.floor(time / 60) || 0).padStart('1', '0');
-        return `${minutes}:${seconds}`
-      }
-      const {currentTime, duration, ended } = audioRef.current
-      setCurrentTime(parseTime(currentTime))
-      setDuration(parseTime(duration))
-      if(ended){
-          nextSong(song);
-      }
-      if(progressBarUpdateProgress !== audioRef.current){
-        setProgressBarUpdateProgress(audioRef.current);
-        audioRef.current.addEventListener("timeupdate", e =>{
-          if(!progressBarUpdateCurrentTime){
-              const {currentTime, duration} = audioRef.current
-              setProgress(currentTime/duration)
-          }
-        }) 
-      }
-    }, 100);
-    return () => clearInterval(intervalId);
-  },[audioRef, nextSong, progressBarUpdateProgress, progressBarUpdateCurrentTime, song]);
 
   const previousIcon = <i className="fa fa-step-backward" aria-hidden="true"></i>
   const nextIcon = <i className="fa fa-step-forward" aria-hidden="true"></i>
