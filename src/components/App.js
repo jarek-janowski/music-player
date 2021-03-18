@@ -1,22 +1,28 @@
 import { useState, useEffect, useRef } from 'react';
 import fetchJsonp from 'fetch-jsonp'
 
-import './App.scss';
 import SongPlayer from './SongPlayer';
 import Songs from './Songs';
+import FixedPlayer from './FixedPlayer'
+import Loading from './Loading'
 
+import './App.scss';
 
 function App() {
   const audioRef = useRef(null);
   const progressRefSongPlayer = useRef(null);
-  const progressRefSongs = useRef(null);
+  const progressRefFixedPlayer = useRef(null);
 
- // prevent autoplay on refresh
-  window.onload = onLoad
-  function onLoad() {
-    audioRef.current.pause()
+  // prevent autoplay
+  window.onload = function () {
+    if(audioRef.current !== null){
+    audioRef.current.pause();}
   }
-
+  //scroll to start
+  window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+  }
+ 
   const URL = "https://api.deezer.com/playlist/8823756962/tracks?output=jsonp"
   const [songs, setSongs] = useState([]);
   useEffect(() => {
@@ -30,18 +36,27 @@ function App() {
       }
     })
   },[])
-  const [currentSongIndex, setCurrentSongIndex] = useState(0)
-  const currentSong = songs[currentSongIndex]
-  const [isPaused, setIsPaused] = useState(true)
-  const [currentTime, setCurrentTime] = useState("0:00")
-  const [duration, setDuration] = useState("0:00")
-  const [progressSongPlayer, setProgressSongPlayer] = useState(0)
-  const [progressSongs, setProgressSongs] = useState(0)
-  const [slideProgressBar, setSlideProgressBar] = useState(false)
-  const [progressBarUpdateCurrentTime, setProgressBarUpdateCurrentTime] = useState(false)
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const currentSong = songs[currentSongIndex];
+  const [isPaused, setIsPaused] = useState(true);
+  const [currentTime, setCurrentTime] = useState("0:00");
+  const [duration, setDuration] = useState("0:00");
+  const [progressSongPlayer, setProgressSongPlayer] = useState(0);
+  const [progressFixedPlayer, setProgressFixedPlayer] = useState(0);
+  const [slideProgressBar, setSlideProgressBar] = useState(false);
+  const [progressBarUpdateCurrentTime, setProgressBarUpdateCurrentTime] = useState(false);
   const [progressBarUpdateProgress, setProgressBarUpdateProgress] = useState(false);
+  const [scrollTop, setScrollTop] = useState(false);
   
-
+  window.addEventListener('scroll',(e) => {
+    const scrollTopTarget = e.target.scrollingElement.scrollTop;
+    if(scrollTopTarget < 487){
+      setScrollTop(false)
+    }else if (scrollTopTarget <580){
+      setScrollTop(true)
+    }
+  
+  });
   const startSetProgressBar = (e) =>{
     setSlideProgressBar(true)
     setProgressBar(e)
@@ -66,8 +81,6 @@ function App() {
       }
     }
   }
-
-  
 
   const handleSelectSong = (selectedSong) =>{
     const audioIndex = songs.findIndex(
@@ -103,10 +116,10 @@ function App() {
       audioRef.current.pause()
     }
   }
-
   useEffect(() => {
     
     const intervalId = setInterval(() => {
+      
       const parseTime = time => {
         const seconds = String(Math.floor(time % 60) || 0).padStart('2', '0');
         const minutes = String(Math.floor(time / 60) || 0).padStart('1', '0');
@@ -125,7 +138,7 @@ function App() {
             if(!progressBarUpdateCurrentTime){
                 const {currentTime, duration} = audioRef.current
                 setProgressSongPlayer(currentTime/duration)
-                setProgressSongs(currentTime/duration)
+                setProgressFixedPlayer(currentTime/duration)
             }
           }) 
         }
@@ -137,7 +150,7 @@ function App() {
   return (
     <div className="App">
       {songs.length === 0 
-      ? "Loading..." 
+      ? <Loading/>
       :<>
         <SongPlayer
           audioRef={audioRef}
@@ -156,16 +169,21 @@ function App() {
         />
         <Songs
           audioRef={audioRef} 
-          song={currentSong}
           songs={songs} 
           currentSong={currentSong}
           handleSelectSong={handleSelectSong}
-          handlePlayPause={handlePlayPauseSong}
           setIsPaused={setIsPaused}
-          isPaused={isPaused}
-          progress={progressSongs}
-          progressRef={progressRefSongs} 
+          song={currentSong}
           />
+        <FixedPlayer
+          audioRef={audioRef} 
+          handlePlayPause={handlePlayPauseSong}
+          isPaused={isPaused}
+          progressRef={progressRefFixedPlayer}
+          progress={progressFixedPlayer}
+          song={currentSong} 
+          className={scrollTop ? "fixed-player__show" : "fixed-player__hide"}
+        />
       </>}
     </div>
   );

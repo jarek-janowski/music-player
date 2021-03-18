@@ -1,0 +1,57 @@
+@import '../variables.scss';
+
+.fixed-player{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    left: 0;
+    height: 12%;
+    width: 100%;
+    background: $gray;
+    transition: .3s;
+    &__artist{
+        color: $lightgray;
+        font-size: 8px;
+    }
+    &__button{
+        position: absolute;
+        right: 16px;
+        font-size: 16px;
+        background: none;
+        border: none;
+        color: $white;
+        outline: none;
+    }
+    &__hide {
+        
+        bottom: -15%
+    }
+    &__image{
+        height: 100%;
+    }
+    &__info{
+        margin-left: 8px;
+    }
+    &__progress-container{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 2px;
+        background: $lightgray;
+        & > div {
+            background: $blue;
+            height: 2px;
+        }
+        
+    }
+    &__show{
+        bottom: 0;
+        // display: flex;
+    }
+  
+    &__title{
+        color: $white;
+        font-size: 9px;
+    }
+    
+}

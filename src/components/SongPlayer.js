@@ -13,7 +13,8 @@ const SongPlayer = ({
   setProgressBar,
   progress,
   currentTime,
-  duration }) => {
+  duration,
+  }) => {
     
   const { preview, album, title, artist } = song;
 
@@ -35,7 +36,7 @@ const SongPlayer = ({
         </h2>
         <p className="song-player__artist">{artist.name}</p>
       </div>
-      <audio ref={audioRef} key={album.cover_medium} autoPlay muted>
+      <audio ref={audioRef} key={album.cover_medium} autoPlay>
         <source src={preview} />
       </audio>
       <div className="progress-bar">
