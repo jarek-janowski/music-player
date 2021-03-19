@@ -9,6 +9,7 @@ import Loading from './Loading'
 import './App.scss';
 
 function App() {
+
   const audioRef = useRef(null);
   const progressRefSongPlayer = useRef(null);
   const progressRefFixedPlayer = useRef(null);
@@ -35,6 +36,8 @@ function App() {
         })
       }
     })
+    const retrievedObject = localStorage.getItem('favourites')
+    setFavourites(JSON.parse(retrievedObject))
   },[])
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const currentSong = songs[currentSongIndex];
@@ -55,7 +58,6 @@ function App() {
     }else if (scrollTopTarget <580){
       setScrollTop(true)
     }
-  
   });
   const startSetProgressBar = (e) =>{
     setSlideProgressBar(true)
@@ -117,7 +119,6 @@ function App() {
     }
   }
   useEffect(() => {
-    
     const intervalId = setInterval(() => {
       
       const parseTime = time => {
@@ -146,6 +147,53 @@ function App() {
     }, 100);
     return () => clearInterval(intervalId);
   },);
+  const Favourites = ({favourites}) => {
+    return ( 
+      <section style={{paddingBottom: 80}}>
+          <h2 className="songs__heading">Favourites</h2>
+          <ul className="songs__list">
+            {favourites===null ? "Dodaj coś" :favourites.map(favitem =>(
+              <FavouritesListItem
+                key={favitem.id} 
+                artist={favitem.artist}
+                cover={favitem.cover}
+                id={favitem.id}
+                preview={favitem.preview}
+                title={favitem.title}
+              />
+            ))}
+          </ul>
+        </section>
+     );
+  }
+
+  const FavouritesListItem  = ({artist, cover, title}) => {
+    return ( 
+      <li className="song-list-item">
+        <img className="song-list-item__image"src={cover} alt={`${title} cover`}/>
+        <div className="title-artist-wrapper">
+          <p className="song-list-item__title" >{title}</p>
+          <p className="song-list-item__artist">{artist}</p>
+        </div>
+      </li>
+     );
+  }
+
+  const [favourites, setFavourites] = useState([])
+ 
+  const handleAddToFavourites = () =>{
+    const arr = JSON.parse(localStorage.getItem('favourites')) || [];
+    arr.push({
+      id: currentSong.id,
+      title: currentSong.title,
+      artist: currentSong.artist.name,
+      preview: currentSong.preview,
+      cover: currentSong.album.cover_small
+    })
+    localStorage.setItem('favourites', JSON.stringify(arr))
+    const retrievedObject = localStorage.getItem('favourites')
+    setFavourites(JSON.parse(retrievedObject))
+  }
 
   return (
     <div className="App">
@@ -166,6 +214,7 @@ function App() {
           progress={progressSongPlayer}
           currentTime={currentTime}
           duration={duration}
+          addToFavourites={handleAddToFavourites}
         />
         <Songs
           audioRef={audioRef} 
@@ -175,6 +224,9 @@ function App() {
           setIsPaused={setIsPaused}
           song={currentSong}
           />
+        <Favourites
+          favourites={favourites}
+        />
         <FixedPlayer
           audioRef={audioRef} 
           handlePlayPause={handlePlayPauseSong}

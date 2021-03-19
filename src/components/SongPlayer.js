@@ -14,6 +14,7 @@ const SongPlayer = ({
   progress,
   currentTime,
   duration,
+  addToFavourites
   }) => {
     
   const { preview, album, title, artist } = song;
@@ -35,8 +36,9 @@ const SongPlayer = ({
           <span className={title.length > 28 ? "song-player__title--if-length--animation" : ""}>{title}</span>
         </h2>
         <p className="song-player__artist">{artist.name}</p>
+        <button onClick={addToFavourites}>fav</button>
       </div>
-      <audio ref={audioRef} key={album.cover_medium} autoPlay>
+      <audio ref={audioRef} key={album.cover_medium} autoPlay muted>
         <source src={preview} />
       </audio>
       <div className="progress-bar">

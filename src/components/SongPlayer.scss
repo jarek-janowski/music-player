@@ -55,13 +55,12 @@
         overflow: hidden;
         &--animation{
             position: absolute;
-            top: 50%;
-            // left: 100%;
             transform: translateY(-50%);
             width: 500px;
             animation: text-slide 8s linear infinite both;
         }
     }
+ 
     &__title{
         font-size: 16px;
         text-align: start;
