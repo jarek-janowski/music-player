@@ -5,14 +5,15 @@ import SongPlayer from './SongPlayer';
 import Songs from './Songs';
 import FixedPlayer from './FixedPlayer'
 import Loading from './Loading'
+import Favourites from './Favourites'
 
 import './App.scss';
 
 function App() {
-
   const audioRef = useRef(null);
   const progressRefSongPlayer = useRef(null);
   const progressRefFixedPlayer = useRef(null);
+  const URL = "https://api.deezer.com/playlist/8823756962/tracks?output=jsonp"
 
   // prevent autoplay
   window.onload = function () {
@@ -23,9 +24,21 @@ function App() {
   window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   }
- 
-  const URL = "https://api.deezer.com/playlist/8823756962/tracks?output=jsonp"
+
   const [songs, setSongs] = useState([]);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const currentSong = songs[currentSongIndex];
+  const [isPaused, setIsPaused] = useState(true);
+  const [currentTime, setCurrentTime] = useState("0:00");
+  const [duration, setDuration] = useState("0:00");
+  const [progressSongPlayer, setProgressSongPlayer] = useState(0);
+  const [progressFixedPlayer, setProgressFixedPlayer] = useState(0);
+  const [slideProgressBar, setSlideProgressBar] = useState(false);
+  const [progressBarUpdateCurrentTime, setProgressBarUpdateCurrentTime] = useState(false);
+  const [progressBarUpdateProgress, setProgressBarUpdateProgress] = useState(false);
+  const [scrollTop, setScrollTop] = useState(false);
+  const [favourites, setFavourites] = useState([])
+
   useEffect(() => {
     fetchJsonp(URL)
     .then(response => {
@@ -39,18 +52,38 @@ function App() {
     const retrievedObject = localStorage.getItem('favourites')
     setFavourites(JSON.parse(retrievedObject))
   },[])
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const currentSong = songs[currentSongIndex];
-  const [isPaused, setIsPaused] = useState(true);
-  const [currentTime, setCurrentTime] = useState("0:00");
-  const [duration, setDuration] = useState("0:00");
-  const [progressSongPlayer, setProgressSongPlayer] = useState(0);
-  const [progressFixedPlayer, setProgressFixedPlayer] = useState(0);
-  const [slideProgressBar, setSlideProgressBar] = useState(false);
-  const [progressBarUpdateCurrentTime, setProgressBarUpdateCurrentTime] = useState(false);
-  const [progressBarUpdateProgress, setProgressBarUpdateProgress] = useState(false);
-  const [scrollTop, setScrollTop] = useState(false);
-  
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      
+      const parseTime = time => {
+        const seconds = String(Math.floor(time % 60) || 0).padStart('2', '0');
+        const minutes = String(Math.floor(time / 60) || 0).padStart('1', '0');
+        return `${minutes}:${seconds}`
+      }
+      if(audioRef.current !== null) {
+        const {currentTime, duration, ended } = audioRef.current
+        setCurrentTime(parseTime(currentTime))
+        setDuration(parseTime(duration))
+        if(ended){
+          handleNextSong(currentSong);
+        }
+        if(progressBarUpdateProgress !== audioRef.current){
+          setProgressBarUpdateProgress(audioRef.current);
+          audioRef.current.addEventListener("timeupdate", e =>{
+            if(!progressBarUpdateCurrentTime){
+                const {currentTime, duration} = audioRef.current
+                setProgressSongPlayer(currentTime/duration)
+                setProgressFixedPlayer(currentTime/duration)
+            }
+          }) 
+        }
+      }
+    }, 100);
+    return () => clearInterval(intervalId);
+  },);
+
+  //show FixedPlayer 
   window.addEventListener('scroll',(e) => {
     const scrollTopTarget = e.target.scrollingElement.scrollTop;
     if(scrollTopTarget < 487){
@@ -59,6 +92,7 @@ function App() {
       setScrollTop(true)
     }
   });
+  
   const startSetProgressBar = (e) =>{
     setSlideProgressBar(true)
     setProgressBar(e)
@@ -118,68 +152,6 @@ function App() {
       audioRef.current.pause()
     }
   }
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      
-      const parseTime = time => {
-        const seconds = String(Math.floor(time % 60) || 0).padStart('2', '0');
-        const minutes = String(Math.floor(time / 60) || 0).padStart('1', '0');
-        return `${minutes}:${seconds}`
-      }
-      if(audioRef.current !== null) {
-        const {currentTime, duration, ended } = audioRef.current
-        setCurrentTime(parseTime(currentTime))
-        setDuration(parseTime(duration))
-        if(ended){
-          handleNextSong(currentSong);
-        }
-        if(progressBarUpdateProgress !== audioRef.current){
-          setProgressBarUpdateProgress(audioRef.current);
-          audioRef.current.addEventListener("timeupdate", e =>{
-            if(!progressBarUpdateCurrentTime){
-                const {currentTime, duration} = audioRef.current
-                setProgressSongPlayer(currentTime/duration)
-                setProgressFixedPlayer(currentTime/duration)
-            }
-          }) 
-        }
-      }
-    }, 100);
-    return () => clearInterval(intervalId);
-  },);
-  const Favourites = ({favourites}) => {
-    return ( 
-      <section style={{paddingBottom: 80}}>
-          <h2 className="songs__heading">Favourites</h2>
-          <ul className="songs__list">
-            {favourites===null ? "Dodaj coś" :favourites.map(favitem =>(
-              <FavouritesListItem
-                key={favitem.id} 
-                artist={favitem.artist}
-                cover={favitem.cover}
-                id={favitem.id}
-                preview={favitem.preview}
-                title={favitem.title}
-              />
-            ))}
-          </ul>
-        </section>
-     );
-  }
-
-  const FavouritesListItem  = ({artist, cover, title}) => {
-    return ( 
-      <li className="song-list-item">
-        <img className="song-list-item__image"src={cover} alt={`${title} cover`}/>
-        <div className="title-artist-wrapper">
-          <p className="song-list-item__title" >{title}</p>
-          <p className="song-list-item__artist">{artist}</p>
-        </div>
-      </li>
-     );
-  }
-
-  const [favourites, setFavourites] = useState([])
  
   const handleAddToFavourites = () =>{
     const arr = JSON.parse(localStorage.getItem('favourites')) || [];
