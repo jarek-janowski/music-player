@@ -7,7 +7,8 @@ const FixedPlayer = ({
     progress,
     song,
     className,
-    addToFavourites
+    addRemoveFromFavourites,
+    
 }) => {
     const { album, title, artist } = song
     const pauseIcon = <i className="fa fa-pause" aria-hidden="true"></i>
@@ -22,7 +23,7 @@ const FixedPlayer = ({
               <h3 className="fixed-player__title">{title}</h3>
               <p className="fixed-player__artist">{artist.name}</p>
             </div>
-            <button onClick={addToFavourites}>fav</button>
+            <button onClick={addRemoveFromFavourites}>fav</button>
             <button className="fixed-player__button" onClick={handlePlayPause}>{isPaused ? playIcon : pauseIcon}</button>
         </div>);
 }

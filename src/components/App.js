@@ -152,10 +152,12 @@ function App() {
     }
   }
   
-  const handleAddToFavourites = () =>{
-    const songs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
+  const handleAddRemoveFavourites = () =>{
+    const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
       item.id))
-    const includes = songs.includes(currentSong.id)
+    favourites.map(item => (item.id))
+    const includes = storageSongs.includes(currentSong.id)
+    
     if(!includes){
       const arr = JSON.parse(localStorage.getItem('favourites')) || [];
       arr.push({
@@ -168,9 +170,17 @@ function App() {
       localStorage.setItem('favourites', JSON.stringify(arr))
       const retrievedObject = localStorage.getItem('favourites')
       setFavourites(JSON.parse(retrievedObject))
-    }else{alert('juz jest')}
+    }else{
+      const arr = JSON.parse(localStorage.getItem('favourites')) || [];
+      const filtered = arr.filter(el => {
+        return el.id !== currentSong.id
+      })
+      localStorage.setItem('favourites', JSON.stringify(filtered))
+      const retrievedObject = localStorage.getItem('favourites')
+      setFavourites(JSON.parse(retrievedObject))
+    }
   }
-      
+
   const handleAddToFavouritesFromList = (selectedSong) => {
     const audioIndex = songs.findIndex(
       song => song.preview === selectedSong.preview)
@@ -191,7 +201,15 @@ function App() {
       localStorage.setItem('favourites', JSON.stringify(arr))
       const retrievedObject = localStorage.getItem('favourites')
       setFavourites(JSON.parse(retrievedObject))
-    }else{alert('już jest')}
+    }else{
+      const arr = JSON.parse(localStorage.getItem('favourites')) || [];
+      const filtered = arr.filter(el => {
+        return el.id !== addToFavourites.id
+      })
+      localStorage.setItem('favourites', JSON.stringify(filtered))
+      const retrievedObject = localStorage.getItem('favourites')
+      setFavourites(JSON.parse(retrievedObject))
+    }
   }
 
   return (
@@ -213,7 +231,7 @@ function App() {
           progress={progressSongPlayer}
           currentTime={currentTime}
           duration={duration}
-          addToFavourites={handleAddToFavourites}
+          addRemoveFromFavourites={handleAddRemoveFavourites}
         />
         {/* dodac scroll do góry po kliknięciu w fixedplayer */}
         <Songs
@@ -236,7 +254,7 @@ function App() {
           progress={progressFixedPlayer}
           song={currentSong} 
           className={scrollTop ? "fixed-player__show" : "fixed-player__hide"}
-          addToFavourites={handleAddToFavourites}
+          addRemoveFromFavourites={handleAddRemoveFavourites}
         />
       </>}
     </div>
