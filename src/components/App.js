@@ -153,23 +153,33 @@ function App() {
   }
   
   const handleAddToFavourites = () =>{
-    const arr = JSON.parse(localStorage.getItem('favourites')) || [];
-    arr.push({
-      id: currentSong.id,
-      title: currentSong.title,
-      artist: currentSong.artist.name,
-      preview: currentSong.preview,
-      cover: currentSong.album.cover_small
-    })
-    localStorage.setItem('favourites', JSON.stringify(arr))
-    const retrievedObject = localStorage.getItem('favourites')
-    setFavourites(JSON.parse(retrievedObject))
+    const songs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
+      item.id))
+    const includes = songs.includes(currentSong.id)
+    if(!includes){
+      const arr = JSON.parse(localStorage.getItem('favourites')) || [];
+      arr.push({
+        id: currentSong.id,
+        title: currentSong.title,
+        artist: currentSong.artist.name,
+        preview: currentSong.preview,
+        cover: currentSong.album.cover_small
+      })
+      localStorage.setItem('favourites', JSON.stringify(arr))
+      const retrievedObject = localStorage.getItem('favourites')
+      setFavourites(JSON.parse(retrievedObject))
+    }else{alert('juz jest')}
   }
-
+      
   const handleAddToFavouritesFromList = (selectedSong) => {
     const audioIndex = songs.findIndex(
       song => song.preview === selectedSong.preview)
-      const addToFavourites = songs[audioIndex]
+    const addToFavourites = songs[audioIndex]
+    const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(
+      item => item.id)
+    const includes = storageSongs.includes(addToFavourites.id)
+
+    if(!includes){
       const arr = JSON.parse(localStorage.getItem('favourites')) || [];
       arr.push({
         id: addToFavourites.id,
@@ -181,6 +191,7 @@ function App() {
       localStorage.setItem('favourites', JSON.stringify(arr))
       const retrievedObject = localStorage.getItem('favourites')
       setFavourites(JSON.parse(retrievedObject))
+    }else{alert('już jest')}
   }
 
   return (
