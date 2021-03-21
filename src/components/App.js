@@ -37,8 +37,8 @@ function App() {
   const [progressBarUpdateCurrentTime, setProgressBarUpdateCurrentTime] = useState(false);
   const [progressBarUpdateProgress, setProgressBarUpdateProgress] = useState(false);
   const [scrollTop, setScrollTop] = useState(false);
-  const [favourites, setFavourites] = useState([])
-
+  const [favourites, setFavourites] = useState([]);
+  
   useEffect(() => {
     fetchJsonp(URL)
     .then(response => {
@@ -55,7 +55,6 @@ function App() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      
       const parseTime = time => {
         const seconds = String(Math.floor(time % 60) || 0).padStart('2', '0');
         const minutes = String(Math.floor(time / 60) || 0).padStart('1', '0');
@@ -92,7 +91,7 @@ function App() {
       setScrollTop(true)
     }
   });
-  
+
   const startSetProgressBar = (e) =>{
     setSlideProgressBar(true)
     setProgressBar(e)
@@ -152,7 +151,7 @@ function App() {
       audioRef.current.pause()
     }
   }
- 
+  
   const handleAddToFavourites = () =>{
     const arr = JSON.parse(localStorage.getItem('favourites')) || [];
     arr.push({
@@ -165,6 +164,23 @@ function App() {
     localStorage.setItem('favourites', JSON.stringify(arr))
     const retrievedObject = localStorage.getItem('favourites')
     setFavourites(JSON.parse(retrievedObject))
+  }
+
+  const handleAddToFavouritesFromList = (selectedSong) => {
+    const audioIndex = songs.findIndex(
+      song => song.preview === selectedSong.preview)
+      const addToFavourites = songs[audioIndex]
+      const arr = JSON.parse(localStorage.getItem('favourites')) || [];
+      arr.push({
+        id: addToFavourites.id,
+        title: addToFavourites.title,
+        artist: addToFavourites.artist.name,
+        preview: addToFavourites.preview,
+        cover: addToFavourites.album.cover_small
+      })
+      localStorage.setItem('favourites', JSON.stringify(arr))
+      const retrievedObject = localStorage.getItem('favourites')
+      setFavourites(JSON.parse(retrievedObject))
   }
 
   return (
@@ -188,6 +204,7 @@ function App() {
           duration={duration}
           addToFavourites={handleAddToFavourites}
         />
+        {/* dodac scroll do góry po kliknięciu w fixedplayer */}
         <Songs
           audioRef={audioRef} 
           songs={songs} 
@@ -195,6 +212,7 @@ function App() {
           handleSelectSong={handleSelectSong}
           setIsPaused={setIsPaused}
           song={currentSong}
+          addToFavourites={handleAddToFavouritesFromList}
           />
         <Favourites
           favourites={favourites}
@@ -207,6 +225,7 @@ function App() {
           progress={progressFixedPlayer}
           song={currentSong} 
           className={scrollTop ? "fixed-player__show" : "fixed-player__hide"}
+          addToFavourites={handleAddToFavourites}
         />
       </>}
     </div>
