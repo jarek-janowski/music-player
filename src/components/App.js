@@ -25,6 +25,9 @@ function App() {
     window.scrollTo(0, 0);
   }
 
+  const [data, setData] = useState([]);
+  // const [playlist, setPlaylist] = useState(false);
+
   const [songs, setSongs] = useState([]);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const currentSong = songs[currentSongIndex];
@@ -38,19 +41,25 @@ function App() {
   const [progressBarUpdateProgress, setProgressBarUpdateProgress] = useState(false);
   const [scrollTop, setScrollTop] = useState(false);
   const [favourites, setFavourites] = useState([]);
-  
+  // console.log(currentTime)
+  // console.log(duration)
+  // console.log(favourites)
+  // console.log(songs)
+  // console.log(progressSongPlayer)
   useEffect(() => {
     fetchJsonp(URL)
     .then(response => {
       if (response.ok){
         response.json()
         .then(data =>{
+          setData(data.data)
           setSongs(data.data)
         })
       }
     })
     const retrievedObject = localStorage.getItem('favourites')
     setFavourites(JSON.parse(retrievedObject))
+    // setSongs(JSON.parse(localStorage.getItem('favourites')))
   },[])
 
   useEffect(() => {
@@ -64,8 +73,14 @@ function App() {
         const {currentTime, duration, ended } = audioRef.current
         setCurrentTime(parseTime(currentTime))
         setDuration(parseTime(duration))
+        // console.log(currentTime)
+        // console.log(duration)
         if(ended){
+          // console.log(currentSong)
+          audioRef.current.currentTime = 0
           handleNextSong(currentSong);
+          setProgressSongPlayer(0)
+          audioRef.current.play()
         }
         if(progressBarUpdateProgress !== audioRef.current){
           setProgressBarUpdateProgress(audioRef.current);
@@ -132,6 +147,8 @@ function App() {
     const nextAudio = audioIndex >= songs.length - 1 ? audioIndex - songs.length +1: audioIndex + 1 
       setCurrentSongIndex(nextAudio)
       setIsPaused(false)
+      audioRef.current.currentTime = 0
+      setProgressSongPlayer(0)
   }
 
   const handlePrevSong = (selectedSong) =>{
@@ -162,9 +179,15 @@ function App() {
       arr.push({
         id: currentSong.id,
         title: currentSong.title,
-        artist: currentSong.artist.name,
+        
         preview: currentSong.preview,
-        cover: currentSong.album.cover_small
+        album: {
+          cover_small: currentSong.album.cover_small,
+          cover_big: currentSong.album.cover_big
+        },
+        artist: {
+          name: currentSong.artist.name
+        }
       })
       localStorage.setItem('favourites', JSON.stringify(arr))
       const retrievedObject = localStorage.getItem('favourites')
@@ -191,11 +214,18 @@ function App() {
     if(!includes){
       const arr = JSON.parse(localStorage.getItem('favourites')) || [];
       arr.push({
+        album: {
+          cover_small: addToFavourites.album.cover_small,
+          cover_big: addToFavourites.album.cover_big
+        },
+        artist: {
+          name: addToFavourites.artist.name
+        },
         id: addToFavourites.id,
         title: addToFavourites.title,
-        artist: addToFavourites.artist.name,
+        // artist: addToFavourites.artist.name,
         preview: addToFavourites.preview,
-        cover: addToFavourites.album.cover_small
+        
       })
       localStorage.setItem('favourites', JSON.stringify(arr))
       const retrievedObject = localStorage.getItem('favourites')
@@ -216,14 +246,25 @@ function App() {
       fav => fav.id === selectedFav.id)
     const remove = favourites[audioIndex]
     const arr = JSON.parse(localStorage.getItem('favourites')) || [];
-    console.log(arr)
-      const filtered = arr.filter(el => {
-        return el.id !== remove.id
-      })
-      console.log(filtered)
-      localStorage.setItem('favourites', JSON.stringify(filtered))
-      const retrievedObject = localStorage.getItem('favourites')
-      setFavourites(JSON.parse(retrievedObject))
+    const filtered = arr.filter(el => {
+      return el.id !== remove.id
+    })
+    localStorage.setItem('favourites', JSON.stringify(filtered))
+    const retrievedObject = localStorage.getItem('favourites')
+    setFavourites(JSON.parse(retrievedObject))
+  }
+
+  // const [data, setData] = useState([]);
+  
+
+  const handlePlayFavourites = () => {
+    setSongs(favourites)
+    setIsPaused(false)
+  }
+
+  const handlePlayAll = () => {
+    setSongs(data)
+    setIsPaused(false)
   }
 
   return (
@@ -248,7 +289,6 @@ function App() {
           addRemoveFromFavourites={handleAddRemoveFavourites}
           favourites={favourites}
         />
-        {/* dodac scroll do góry po kliknięciu w fixedplayer */}
         <Songs
           audioRef={audioRef} 
           songs={songs} 
@@ -260,8 +300,11 @@ function App() {
           favourites={favourites}
           />
         <Favourites
+          audioRef={audioRef} 
           favourites={favourites}
           removeFromFavourites={handleRemoveFromFavouritesListItem}
+          playFavourites={handlePlayFavourites}
+          playAll={handlePlayAll}
         />
         <FixedPlayer
           audioRef={audioRef} 

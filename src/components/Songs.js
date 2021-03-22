@@ -17,7 +17,7 @@ const Songs = ({
       <ul className="songs__list">
         {songs.map(song => (
           <SongListItem
-            key={song.album.cover_medium}
+            key={song.id}
             song={song}
             isCurrent={song.preview === currentSong.preview}
             onSelect={handleSelectSong} 

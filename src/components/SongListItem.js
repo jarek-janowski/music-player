@@ -5,7 +5,7 @@ const SongListItem =({
   onSelect, 
   setIsPaused, 
   audioRef,
-  addToFavourites,
+  addToFavourites
 }) =>{
 
   const color = isCurrent ? "#009FFD" : "#EAF6FF";
