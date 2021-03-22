@@ -23,9 +23,12 @@ const SongPlayer = ({
   const nextIcon = <i className="fa fa-step-forward" aria-hidden="true"></i>
   const pauseIcon = <i className="fa fa-pause" aria-hidden="true"></i>
   const playIcon = <i className="fa fa-play" aria-hidden="true"></i>
+  const emptyHeart = <i className="fa fa-heart-o" aria-hidden="true"></i>
+  const filledHeart = <i className="fa fa-heart" aria-hidden="true"></i>
   
-  const favouritesMap = favourites.map(item => item.id)
-  const includes = favouritesMap.includes(song.id)
+  const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
+    item.id))
+  const includes = storageSongs.includes(song.id)
 
   return (
     <section className="song-player">
@@ -35,11 +38,13 @@ const SongPlayer = ({
         src={album.cover_big}
         alt={`${title} cover`} />
       <div className="info-wrapper">
-        <h2 className={title.length > 28 ? "song-player__title--if-length" : "song-player__title"}>
-          <span className={title.length > 28 ? "song-player__title--if-length--animation" : ""}>{title}</span>
+        <div>
+        <h2 className={title.length > 25 ? "song-player__title--if-length" : "song-player__title"}>
+          <span className={title.length > 25 ? "song-player__title--if-length--animation" : ""}>{title}</span>
         </h2>
         <p className="song-player__artist">{artist.name}</p>
-        <button onClick={addRemoveFromFavourites}>{includes ? "❤" : "🤍"}</button>
+        </div>
+        <button className="song-player__heart" onClick={addRemoveFromFavourites}>{includes ? filledHeart : emptyHeart}</button>
       </div>
       <audio ref={audioRef} key={album.cover_medium} autoPlay muted>
         <source src={preview} />

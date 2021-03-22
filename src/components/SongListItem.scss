@@ -1,17 +1,36 @@
 @import '../variables.scss';
 
 .song-list-item{
-    display: flex;
-    font-size: 12px;
-    // flex-direction: column;
+    position: relative;
+    & > div{
+        position: relative;
+        display: flex;
+        font-size: 12px;
+    }
     &__artist{
         color: $lightgray;
     }
+    &__heart{
+        background: none;
+        border: none;
+        outline: none;
+        color: $blue;
+        position: absolute;
+        font-size: 16px;
+        padding: 2px;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+    }
     &__image{
         margin: 8px 0;
+        width: 56px;
+
     }
     &__title{
         color: $white;
+        width: 100%;
+        padding-right: 16px;
     }
 }
 
@@ -19,6 +38,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    // width: 50%;
+    
     margin-left: 8px;
     line-height: 1.5
 }

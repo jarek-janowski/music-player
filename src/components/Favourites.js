@@ -1,11 +1,13 @@
 import FavouritesListItem from './FavouritesListItem'
 
 const Favourites = ({favourites}) => {
+  const storageSongs = (JSON.parse(localStorage.getItem('favourites'))) || [];
+
     return ( 
       <section style={{paddingBottom: 96}}>
           <h2 className="songs__heading">Favourites</h2>
           <ul className="songs__list">
-            {favourites.length === 0 ? "Dodaj coś" :favourites.map(favitem =>(
+            {storageSongs.length === 0 ? "Dodaj coś" :favourites.map(favitem =>(
               <FavouritesListItem
                 key={favitem.id} 
                 artist={favitem.artist}

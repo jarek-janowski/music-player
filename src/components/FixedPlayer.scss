@@ -2,25 +2,43 @@
 
 .fixed-player{
     position: fixed;
-    display: flex;
-    align-items: center;
     left: 0;
-    height: 12%;
     width: 100%;
     background: $gray;
     transition: .3s;
+    & > div{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
     &__artist{
         color: $lightgray;
         font-size: 8px;
     }
     &__button{
         position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
         right: 16px;
         font-size: 16px;
         background: none;
         border: none;
         color: $white;
         outline: none;
+    }
+    &__heart {
+        background: none;
+        border: none;
+        outline: none;
+        color: $blue;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        padding: 2px;
+        right: 48px;
+        
     }
     &__hide {
         
@@ -52,6 +70,8 @@
     &__title{
         color: $white;
         font-size: 9px;
+        // width: 95%;
+        padding-right: 72px;
     }
     
 }

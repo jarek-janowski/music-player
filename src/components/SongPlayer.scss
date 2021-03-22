@@ -38,6 +38,18 @@
         font-size: 32px;
         text-align: center;
     }
+    &__heart{
+        background: none;
+        border: none;
+        outline: none;
+        color: $blue;
+        position: absolute;
+        font-size: 16px;
+        padding: 2px;
+        top: 50%;
+        transform: translateY(50%);
+        right: 5%;
+    }
     &__image{
         margin: 0 auto;
         width: 92%;
@@ -50,7 +62,7 @@
         font-size: 16px;
         color: $white;
         position: relative;
-        width: 100%;
+        width: 90%;
         padding: 9.5px 0;
         overflow: hidden;
         &--animation{
@@ -62,6 +74,7 @@
     }
  
     &__title{
+        width: 90%;
         font-size: 16px;
         text-align: start;
         color: $white;
@@ -75,6 +88,7 @@
     align-items: center;
 }
 .info-wrapper {
+    position: relative;
     width: 100%;
     margin-bottom: 16px;
     padding: 40px 16px 0;
