@@ -6,7 +6,6 @@ const SongListItem =({
   setIsPaused, 
   audioRef,
   addToFavourites,
-  favourites
 }) =>{
 
   const color = isCurrent ? "#009FFD" : "#EAF6FF";
@@ -36,7 +35,7 @@ const SongListItem =({
         <p className="song-list-item__artist">{artist.name}</p>
       </div>
       </div>
-      <button className="song-list-item__heart" onClick={() => addToFavourites(song)}>{includes ? filledHeart : emptyHeart}</button>
+      <button className="song-list-item__icon" onClick={() => addToFavourites(song)}>{includes ? filledHeart : emptyHeart}</button>
     </li>
     
     </>

@@ -211,7 +211,20 @@ function App() {
     }
   }
 
-
+  const handleRemoveFromFavouritesListItem = (selectedFav) => {
+    const audioIndex = favourites.findIndex(
+      fav => fav.id === selectedFav.id)
+    const remove = favourites[audioIndex]
+    const arr = JSON.parse(localStorage.getItem('favourites')) || [];
+    console.log(arr)
+      const filtered = arr.filter(el => {
+        return el.id !== remove.id
+      })
+      console.log(filtered)
+      localStorage.setItem('favourites', JSON.stringify(filtered))
+      const retrievedObject = localStorage.getItem('favourites')
+      setFavourites(JSON.parse(retrievedObject))
+  }
 
   return (
     <div className="App">
@@ -248,6 +261,7 @@ function App() {
           />
         <Favourites
           favourites={favourites}
+          removeFromFavourites={handleRemoveFromFavouritesListItem}
         />
         <FixedPlayer
           audioRef={audioRef} 

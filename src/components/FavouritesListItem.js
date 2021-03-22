@@ -1,5 +1,8 @@
 
-const FavouritesListItem  = ({artist, cover, title}) => {
+const FavouritesListItem  = ({favitem, removeFromFavourites}) => {
+    const {artist, cover, title} = favitem
+
+    const deleteIcon = <i className="fa fa-trash-o" aria-hidden="true"></i>
     return ( 
       <li className="song-list-item">
         <div>
@@ -8,6 +11,7 @@ const FavouritesListItem  = ({artist, cover, title}) => {
             <p className="song-list-item__title" >{title}</p>
             <p className="song-list-item__artist">{artist}</p>
           </div>
+          <button className="song-list-item__icon" onClick={() => removeFromFavourites(favitem)}>{deleteIcon}</button>
         </div>
       </li>
      );

@@ -1,6 +1,6 @@
 import FavouritesListItem from './FavouritesListItem'
 
-const Favourites = ({favourites}) => {
+const Favourites = ({favourites, removeFromFavourites}) => {
   const storageSongs = (JSON.parse(localStorage.getItem('favourites'))) || [];
 
     return ( 
@@ -9,12 +9,9 @@ const Favourites = ({favourites}) => {
           <ul className="songs__list">
             {storageSongs.length === 0 ? "Dodaj coś" :favourites.map(favitem =>(
               <FavouritesListItem
+                favitem={favitem}
                 key={favitem.id} 
-                artist={favitem.artist}
-                cover={favitem.cover}
-                id={favitem.id}
-                preview={favitem.preview}
-                title={favitem.title}
+                removeFromFavourites={removeFromFavourites}
               />
             ))}
           </ul>
