@@ -14,16 +14,19 @@ const SongPlayer = ({
   progress,
   currentTime,
   duration,
-  addRemoveFromFavourites
+  addRemoveFromFavourites,
+  favourites
   }) => {
     
   const { preview, album, title, artist } = song;
-
   const previousIcon = <i className="fa fa-step-backward" aria-hidden="true"></i>
   const nextIcon = <i className="fa fa-step-forward" aria-hidden="true"></i>
   const pauseIcon = <i className="fa fa-pause" aria-hidden="true"></i>
   const playIcon = <i className="fa fa-play" aria-hidden="true"></i>
   
+  const favouritesMap = favourites.map(item => item.id)
+  const includes = favouritesMap.includes(song.id)
+
   return (
     <section className="song-player">
       <h1 className="song-player__heading">Music player</h1>
@@ -36,7 +39,7 @@ const SongPlayer = ({
           <span className={title.length > 28 ? "song-player__title--if-length--animation" : ""}>{title}</span>
         </h2>
         <p className="song-player__artist">{artist.name}</p>
-        <button onClick={addRemoveFromFavourites}>fav</button>
+        <button onClick={addRemoveFromFavourites}>{includes ? "❤" : "🤍"}</button>
       </div>
       <audio ref={audioRef} key={album.cover_medium} autoPlay muted>
         <source src={preview} />

@@ -155,7 +155,6 @@ function App() {
   const handleAddRemoveFavourites = () =>{
     const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
       item.id))
-    favourites.map(item => (item.id))
     const includes = storageSongs.includes(currentSong.id)
     
     if(!includes){
@@ -212,6 +211,8 @@ function App() {
     }
   }
 
+
+
   return (
     <div className="App">
       {songs.length === 0 
@@ -232,6 +233,7 @@ function App() {
           currentTime={currentTime}
           duration={duration}
           addRemoveFromFavourites={handleAddRemoveFavourites}
+          favourites={favourites}
         />
         {/* dodac scroll do góry po kliknięciu w fixedplayer */}
         <Songs
@@ -242,6 +244,7 @@ function App() {
           setIsPaused={setIsPaused}
           song={currentSong}
           addToFavourites={handleAddToFavouritesFromList}
+          favourites={favourites}
           />
         <Favourites
           favourites={favourites}
@@ -255,6 +258,7 @@ function App() {
           song={currentSong} 
           className={scrollTop ? "fixed-player__show" : "fixed-player__hide"}
           addRemoveFromFavourites={handleAddRemoveFavourites}
+          favourites={favourites}
         />
       </>}
     </div>

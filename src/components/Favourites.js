@@ -5,7 +5,7 @@ const Favourites = ({favourites}) => {
       <section style={{paddingBottom: 96}}>
           <h2 className="songs__heading">Favourites</h2>
           <ul className="songs__list">
-            {favourites=== null ? "Dodaj coś" :favourites.map(favitem =>(
+            {favourites.length === 0 ? "Dodaj coś" :favourites.map(favitem =>(
               <FavouritesListItem
                 key={favitem.id} 
                 artist={favitem.artist}

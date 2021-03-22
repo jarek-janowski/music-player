@@ -8,9 +8,12 @@ const FixedPlayer = ({
     song,
     className,
     addRemoveFromFavourites,
-    
+    favourites
 }) => {
     const { album, title, artist } = song
+
+    const favouritesMap = favourites.map(item => item.id)
+    const includes = favouritesMap.includes(song.id)
     const pauseIcon = <i className="fa fa-pause" aria-hidden="true"></i>
     const playIcon = <i className="fa fa-play" aria-hidden="true"></i>
     return (
@@ -23,7 +26,7 @@ const FixedPlayer = ({
               <h3 className="fixed-player__title">{title}</h3>
               <p className="fixed-player__artist">{artist.name}</p>
             </div>
-            <button onClick={addRemoveFromFavourites}>fav</button>
+            <button onClick={addRemoveFromFavourites}>{includes ? "❤" : "🤍"}</button>
             <button className="fixed-player__button" onClick={handlePlayPause}>{isPaused ? playIcon : pauseIcon}</button>
         </div>);
 }

@@ -6,7 +6,7 @@ const SongListItem =({
   setIsPaused, 
   audioRef,
   addToFavourites,
- 
+  favourites
 }) =>{
 
   const color = isCurrent ? "#009FFD" : "#EAF6FF";
@@ -19,6 +19,9 @@ const SongListItem =({
     onSelect(song);
   }
 
+  const favouritesMap = favourites.map(item => item.id)
+  const includes = favouritesMap.includes(song.id)
+
   return (
     <>
     <li className="song-list-item">
@@ -29,7 +32,7 @@ const SongListItem =({
           <p className="song-list-item__artist">{artist.name}</p>
         </div>
         </div>
-      <button onClick={() => addToFavourites(song)}>fav</button>
+      <button onClick={() => addToFavourites(song)}>{includes ? "❤" : "🤍"}</button>
     </li>
     </>
   );

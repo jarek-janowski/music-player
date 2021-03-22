@@ -8,6 +8,7 @@ const Songs = ({
   audioRef, 
   setIsPaused,
   addToFavourites,
+  favourites,
 }) => {
 
   return (
@@ -23,6 +24,7 @@ const Songs = ({
             setIsPaused={setIsPaused} 
             audioRef={audioRef}
             addToFavourites={addToFavourites}
+            favourites={favourites}
           />))}
       </ul>
     </section>
