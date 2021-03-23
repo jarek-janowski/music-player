@@ -57,6 +57,7 @@ function App() {
   },[])
 
   useEffect(() => {
+   
     const intervalId = setInterval(() => {
       const parseTime = time => {
         const seconds = String(Math.floor(time % 60) || 0).padStart('2', '0');
@@ -98,6 +99,12 @@ function App() {
       setScrollTop(true)
     }
   });
+  
+  // if favourites empty back to all songs
+  if(currentSong === undefined && favourites.length=== 0 && data.length > 1){
+    setSongs(data)
+    setCurrentPlaylist("all")
+  }
 
   const startSetProgressBar = (e) =>{
     setSlideProgressBar(true)
@@ -261,7 +268,6 @@ function App() {
     audioRef.current.currentTime = 0
   }
 
-
   return (
     <div className="App">
       {songs.length === 0 && currentPlaylist === "all"
@@ -285,6 +291,7 @@ function App() {
           addRemoveFromFavourites={handleAddRemoveFavourites}
           favourites={favourites}
           currentPlaylist={currentPlaylist}
+          data={data}
         />
         <Songs
           audioRef={audioRef} 
@@ -310,10 +317,11 @@ function App() {
           song={currentSong} 
           className={scrollTop ? "fixed-player__show" : "fixed-player__hide"}
           addRemoveFromFavourites={handleAddRemoveFavourites}
-          favourites={favourites}
           playFavourites={handlePlayFavourites}
           playAll={handlePlayAll}
           currentPlaylist={currentPlaylist}
+          data={data}
+          favourites={favourites}
         />
       </>}
     </div>

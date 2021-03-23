@@ -16,10 +16,11 @@ const SongPlayer = ({
   duration,
   addRemoveFromFavourites,
   currentPlaylist,
-  favourites
+  favourites,
+  data
   }) => {
   
-  const { preview, album, title, artist, id } = song;
+  const { preview, album, title, artist, id } = song
 
   const previousIcon = <i className="fa fa-step-backward" aria-hidden="true"></i>
   const nextIcon = <i className="fa fa-step-forward" aria-hidden="true"></i>

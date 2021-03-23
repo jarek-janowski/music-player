@@ -10,7 +10,9 @@ const FixedPlayer = ({
     addRemoveFromFavourites,
     playFavourites,
     playAll,
-    currentPlaylist
+    currentPlaylist,
+    data,
+    favourites
 }) => {
     const { album, title, artist } = song
 
@@ -21,8 +23,8 @@ const FixedPlayer = ({
 
     const currentPlaylistFavourites = currentPlaylist === "favourites"
     const currentPlaylistAll = currentPlaylist === "all"
-    const favourites = currentPlaylistFavourites ? "playlists__chosen" : "playlists__no-chosen"
-    const all = currentPlaylistAll ? "playlists__chosen" : "playlists__no-chosen"
+    const favouritesClass = currentPlaylistFavourites ? "playlists__chosen" : "playlists__no-chosen"
+    const allClass = currentPlaylistAll ? "playlists__chosen" : "playlists__no-chosen"
 
     const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map
     (item => (item.id))
@@ -43,8 +45,8 @@ const FixedPlayer = ({
                 <button className="fixed-player__heart"onClick={addRemoveFromFavourites}>{includes ? filledHeart : emptyHeart}</button>
                 <button className="fixed-player__button" onClick={handlePlayPause}>{isPaused ? playIcon : pauseIcon}</button>
             <div className="playlists">
-                <button className={all} onClick={playAll}>All songs <span>{currentPlaylistAll ? "" : playIcon}</span></button>
-                <button className={favourites} onClick={playFavourites}>Favourites <span>{currentPlaylistFavourites ? "" : playIcon}</span></button>
+                <button className={allClass} onClick={playAll}>All songs {`(${data.length})`}<span>{currentPlaylistAll ? "" : playIcon}</span></button>
+                <button className={favouritesClass} onClick={playFavourites}>Favourites {`(${favourites.length})`}<span>{currentPlaylistFavourites ? "" : playIcon}</span></button>
             </div>
         </div>
         </>
