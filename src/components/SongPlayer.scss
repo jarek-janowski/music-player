@@ -1,11 +1,11 @@
 @import '../variables.scss';
 
 .song-player{
-    height: 100vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     @media (min-width: 768px){
-        padding: 0 0 16px ;
+        padding: 0 0 16px  ;
         position: fixed;
         width: 100%;
         bottom: 0;
