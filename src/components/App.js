@@ -301,7 +301,7 @@ function App() {
           favourites={favourites}
           removeFromFavourites={handleRemoveFromFavouritesListItem}
         /> */}
-        {/* <FixedPlayer
+        <FixedPlayer
           audioRef={audioRef} 
           handlePlayPause={handlePlayPauseSong}
           isPaused={isPaused}
@@ -314,7 +314,7 @@ function App() {
           playFavourites={handlePlayFavourites}
           playAll={handlePlayAll}
           currentPlaylist={currentPlaylist}
-        /> */}
+        />
       </>}
     </div>
   );
