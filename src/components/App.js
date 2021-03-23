@@ -18,13 +18,14 @@ function App() {
   // prevent autoplay
   window.onload = function () {
     if(audioRef.current !== null){
-    audioRef.current.pause();}
+    audioRef.current.autoplay = false
+    }
   }
   //scroll to start
   window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   }
-
+  const [popOut, setPopOut] = useState(false)
   const [data, setData] = useState([]);
   const [currentPlaylist, setCurrentPlaylist] = useState("all");
   const [songs, setSongs] = useState([]);
@@ -99,7 +100,7 @@ function App() {
       setScrollTop(true)
     }
   });
-  
+
   // if favourites empty back to all songs
   if(currentSong === undefined && favourites.length=== 0 && data.length > 1){
     setSongs(data)
@@ -254,19 +255,22 @@ function App() {
       setCurrentSongIndex(0);
       setIsPaused(false);
       setCurrentPlaylist("favourites");
-      audioRef.current.currentTime = 0
-    }else{
-      alert('Favourites are empty, add something')
+      audioRef.current.currentTime = 0;
+      audioRef.current.play()
+      setPopOut(false);
+    }else {
+      setPopOut(true);
     }
   }
 
   const handlePlayAll = () => {
-    setSongs(data)
+    setSongs(data);
     setCurrentSongIndex(0);
-    setIsPaused(false)
-    setCurrentPlaylist("all")
-    audioRef.current.currentTime = 0
-  }
+    setIsPaused(false);
+    setCurrentPlaylist("all");
+    audioRef.current.currentTime = 0;
+    audioRef.current.play()
+  } 
 
   return (
     <div className="App">
@@ -322,6 +326,7 @@ function App() {
           currentPlaylist={currentPlaylist}
           data={data}
           favourites={favourites}
+          popOut={popOut}
         />
       </>}
     </div>

@@ -10,7 +10,7 @@
     padding: 24px 16px 0;
   }
 
-  @media (min-width: 768px){
+  @media (min-width: 640px){
     padding: 0;
     display: grid;
     grid-template-columns: 200px 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -24,7 +24,7 @@
     @media (min-width: 375px) and (min-height: 800px){
         margin: 48px 0;
       }
-    @media (min-width: 768px){
+    @media (min-width: 640px){
       margin: 0 0 16px;
       display: flex;
       justify-content: center;

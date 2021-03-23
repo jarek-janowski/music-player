@@ -2,7 +2,7 @@
 
 .song-list-item{
     position: relative;
-    @media(min-width: 768px) {
+    @media(min-width: 640px) {
         padding: 8px;
         &:hover{
             background: $darkblue;
@@ -29,7 +29,7 @@
         top: 50%;
         transform: translateY(-50%);
         right: 0;
-        @media(min-width: 768px) {
+        @media(min-width: 640px) {
             margin-right: 16px;
             cursor: pointer;
         }

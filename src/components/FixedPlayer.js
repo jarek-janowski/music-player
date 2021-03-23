@@ -12,7 +12,8 @@ const FixedPlayer = ({
     playAll,
     currentPlaylist,
     data,
-    favourites
+    favourites,
+    popOut
 }) => {
     const { album, title, artist } = song
 
@@ -29,6 +30,7 @@ const FixedPlayer = ({
     const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map
     (item => (item.id))
     const includes = storageSongs.includes(song.id)
+
     return (
         <>
         <div className={`fixed-player ${className}`}>
@@ -49,6 +51,7 @@ const FixedPlayer = ({
                 <button className={favouritesClass} onClick={playFavourites}>Favourites {`(${favourites.length})`}<span>{currentPlaylistFavourites ? "" : playIcon}</span></button>
             </div>
         </div>
+        {popOut ? <div className="pop-out">Favourites is empty</div> : ""}
         </>
     );
 }

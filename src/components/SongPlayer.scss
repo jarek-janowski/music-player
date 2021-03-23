@@ -4,17 +4,17 @@
     height: 90vh;
     display: flex;
     flex-direction: column;
-    @media (min-width: 768px){
+    @media (min-width: 640px){
         padding: 0 0 16px  ;
         position: fixed;
         width: 100%;
         bottom: 0;
         left: 0;
-        z-index: 1;
+        z-index: 3;
         background: $gray;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 16px 16px 16px;
+        grid-template-rows: 16px 16px 16px 16px 16px 16px;
         height: 120px;
         grid-column-start: 1;
         grid-column-end: 9;
@@ -27,9 +27,6 @@
         font-size: 12px;
         color: $lightgray;
     }
-    @media (min-width: 768px){
-        
-      }
     &__button{
         background: none;
         border: none;
@@ -52,16 +49,15 @@
         justify-content: space-evenly;
         align-items: center;
         margin: 24px 0 8px 0;
-        @media (min-width: 768px){
-            margin: 0;
-            grid-column-start: 4;
-            grid-column-end: 9;
+        @media (min-width: 640px){
+            grid-column-start: 5;
+            grid-column-end: 8;
             grid-row-start: 2;
             grid-row-end: 3;
           }
           @media (min-width: 1366px){
-            margin-left: 64px;
-            grid-column-start: 3;
+            margin: 12px 0 0;
+            grid-column-start: 4;
             grid-column-end: 8;
         }
     }
@@ -77,18 +73,17 @@
         top: 50%;
         transform: translateY(50%);
         right: 5%;
-        @media (min-width: 768px){
-            left: 16px
+        @media (min-width: 640px){
+            position: static;
+            transform: none;
           }
     }
     &__image{
         margin: 0 auto;
         width: 92%;
-        // height: auto;
-        // margin-bottom: 24px;
         box-shadow: 
         12px 12px 12px 0 rgba(0, 0, 0, .5);
-        @media (min-width: 768px){
+        @media (min-width: 640px){
             margin: 0 0 0 16px;
             height: 88px;
             width: 88px;
@@ -148,8 +143,8 @@
     @media (min-width: 375px) and (min-height: 800px){
         padding: 72px 16px 0;
       }
-      @media (min-width: 768px){
-        width: 50%;
+      @media (min-width: 640px){
+        width: 70%;
         margin-left: 96px;
         padding: 0 0 0 16px;
         grid-column-start: 1;
@@ -167,7 +162,7 @@
     display: flex;
     justify-content: space-between;
     padding: 0 16px;
-    @media (min-width: 768px){
+    @media (min-width: 640px){
             grid-column-start: 4;
             grid-column-end: 9;
             grid-row-start: 5;
@@ -179,30 +174,31 @@
 .timers{
     color: $white;
     margin-top: 8px;
-    // width: 32px;
     font-size: 12px;
     &--duration{
-        @media (min-width: 768px){
+        @media (min-width: 640px){
             position: absolute;
-            right: 6%;
-            margin: 0;
+            right: 11.5%;
             top: 69%;
         }
+        @media(min-width: 768px){
+            right: 12.8%;
+        }
         @media (min-width: 1366px){
-            right: 11%;
-            margin-right: 64px;
+            right: 16%;
         }
     }
     &--current-time{
-        @media (min-width: 768px){
+        @media (min-width: 640px){
             position: absolute;
-            right: 54.5%;
-            margin: 0;
+            left: 51%;
             top: 69%;
         }
+        @media(min-width: 768px){
+            left: 50.2%;
+        }
         @media (min-width: 1366px){
-            right: 59%;
-            margin-right: 64px;
+            left: 41.5%;
         }
     }
     }
@@ -211,20 +207,19 @@
     justify-content: center;
     padding: 0 16px;
     cursor: pointer;
-    @media (min-width: 768px){
-        width: 75%;
+    @media (min-width: 640px){
+        width: 90%;
         margin: 0 auto;
-        // padding: 0 40px;
-        // margin: 0 16px 16px 0;
-        grid-column-start: 4;
-        grid-column-end: 9;
-        grid-row-start: 5;
-        grid-row-end: 5;
+        grid-column-start: 5;
+        grid-column-end: 8;
+        grid-row-start: 7;
+        grid-row-end: 7;
+
       }
       @media (min-width: 1366px){
-        grid-column-start: 3;
+        width: 80%;
+        grid-column-start: 4;
         grid-column-end: 8;
-        margin-right: 64px;
     }
     &__container{
         width: 100%;
