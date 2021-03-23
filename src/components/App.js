@@ -267,6 +267,7 @@ function App() {
       {songs.length === 0 && currentPlaylist === "all"
       ? <Loading/>
       :<>
+        <h1 className="App__heading">Music player</h1>
         <SongPlayer
           audioRef={audioRef}
           progressRef={progressRefSongPlayer} 
@@ -300,7 +301,7 @@ function App() {
           favourites={favourites}
           removeFromFavourites={handleRemoveFromFavouritesListItem}
         /> */}
-        <FixedPlayer
+        {/* <FixedPlayer
           audioRef={audioRef} 
           handlePlayPause={handlePlayPauseSong}
           isPaused={isPaused}
@@ -313,7 +314,7 @@ function App() {
           playFavourites={handlePlayFavourites}
           playAll={handlePlayAll}
           currentPlaylist={currentPlaylist}
-        />
+        /> */}
       </>}
     </div>
   );

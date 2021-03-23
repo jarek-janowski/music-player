@@ -34,7 +34,6 @@ const SongPlayer = ({
 
   return (
     <section className="song-player">
-      <h1 className="song-player__heading">Music player</h1>
       <img
         className="song-player__image"
         src={album.cover_big}
@@ -64,8 +63,8 @@ const SongPlayer = ({
         </div>
       </div>
       <div className="timers-wrapper">
-        <span className="timers">{currentTime}</span>
-        <span className="timers">{duration}</span>
+        <span className="timers timers--current-time">{currentTime}</span>
+        <span className="timers timers--duration">{duration}</span>
       </div>
       <div className="song-player__controls">
         <div className="button-wrapper">

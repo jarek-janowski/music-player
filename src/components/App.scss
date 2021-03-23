@@ -1,12 +1,36 @@
+@import '../variables.scss';
+
 .App {
   // width: 100%;
   // margin: 0 auto;
   padding: 0 16px;
   @media (min-width: 375px){
     padding: 16px 16px 0;
-}
-@media (min-width: 410px){
-  padding: 24px 16px 0;
-}
+  }
+  @media (min-width: 410px){
+    padding: 24px 16px 0;
+  }
 
+  @media (min-width: 768px){
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 100px 1fr 20px;
+  }
+  &__heading{
+    color: $blue;
+    margin: 24px 0;
+    font-size: 32px;
+    text-align: center;
+    @media (min-width: 375px) and (min-height: 800px){
+        margin: 48px 0;
+      }
+    @media (min-width: 768px){
+      margin: 0;
+      // text-align: start;
+      grid-column-start: 1;
+      grid-column-end: 9;
+      grid-row-start: 1;
+      grid-row-end: 1;
+    }
+}
 }
