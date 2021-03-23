@@ -18,6 +18,12 @@
     &__artist{
         color: $lightgray;
         font-size: 8px;
+        @media (min-width: 360px){
+            font-size: 9px;
+        }
+        @media (min-width: 410px){
+            font-size: 10px;
+        }
     }
     &__button{
         position: absolute;
@@ -48,7 +54,12 @@
         bottom: -20%
     }
     &__image{
-        height: 100%;
+        width: 64px;
+        height: 64px;
+        @media(min-width: 360px){
+            height: 100%;
+            width: auto;
+        }
     }
     &__info{
         margin-left: 8px;
@@ -73,6 +84,12 @@
         color: $white;
         font-size: 9px;
         padding-right: 72px;
+        @media (min-width: 360px){
+            font-size: 10px;
+        }
+        @media (min-width: 410px){
+            font-size: 11px;
+        }
     }
     
 }

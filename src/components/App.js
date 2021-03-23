@@ -176,7 +176,7 @@ function App() {
         
         preview: currentSong.preview,
         album: {
-          cover_small: currentSong.album.cover_small,
+          cover_medium: currentSong.album.cover_medium,
           cover_big: currentSong.album.cover_big
         },
         artist: {
@@ -212,7 +212,7 @@ function App() {
       const arr = JSON.parse(localStorage.getItem('favourites')) || [];
       arr.push({
         album: {
-          cover_small: addToFavourites.album.cover_small,
+          cover_medium: addToFavourites.album.cover_medium,
           cover_big: addToFavourites.album.cover_big
         },
         artist: {

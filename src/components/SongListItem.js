@@ -33,7 +33,7 @@ const SongListItem =({
     <>
     <li className="song-list-item">
       <div onClick={handlePlayPause} >
-      <img className="song-list-item__image"src={album.cover_small} alt={`${title} cover`}/>
+      <img className="song-list-item__image"src={album.cover_medium} alt={`${title} cover`}/>
       <div className="title-artist-wrapper">
         <p className="song-list-item__title"style={style}>{title}</p>
         <p className="song-list-item__artist">{artist.name}</p>

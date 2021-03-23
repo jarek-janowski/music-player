@@ -40,7 +40,7 @@ const FixedPlayer = ({
                 <div ref={progressRef} className="fixed-player__progress-container" >
                     <div style={{width: (progress * 100) + '%'}}></div>
                 </div>
-                <img className="fixed-player__image" src={album.cover_small} alt={`${title} cover`}/>
+                <img className="fixed-player__image" src={album.cover_medium} alt={`${title} cover`}/>
                 <div className="fixed-player__info">
                 <h3 className="fixed-player__title">{title}</h3>
                 <p className="fixed-player__artist">{artist.name}</p>
