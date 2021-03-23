@@ -9,13 +9,17 @@ const Songs = ({
   setIsPaused,
   addToFavourites,
   favourites,
+  currentPlaylist
 }) => {
+  
+
 
   return (
     <section className="songs">
-      <h2 className="songs__heading">Songs</h2>
-      <ul className="songs__list">
-        {songs.map(song => (
+      <h2 className="songs__heading">{currentPlaylist === "all" ? "All songs" : "Favourites"}</h2>
+        <ul className="songs__list">
+          {songs.length === 0 ? "dodaj coś" :
+        songs.map(song => (
           <SongListItem
             key={song.id}
             song={song}
@@ -25,6 +29,7 @@ const Songs = ({
             audioRef={audioRef}
             addToFavourites={addToFavourites}
             favourites={favourites}
+            currentPlaylist={currentPlaylist}
           />))}
       </ul>
     </section>

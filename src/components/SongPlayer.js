@@ -15,10 +15,12 @@ const SongPlayer = ({
   currentTime,
   duration,
   addRemoveFromFavourites,
+  currentPlaylist,
   favourites
   }) => {
-    
-  const { preview, album, title, artist } = song;
+  
+  const { preview, album, title, artist, id } = song;
+
   const previousIcon = <i className="fa fa-step-backward" aria-hidden="true"></i>
   const nextIcon = <i className="fa fa-step-forward" aria-hidden="true"></i>
   const pauseIcon = <i className="fa fa-pause" aria-hidden="true"></i>
@@ -46,7 +48,7 @@ const SongPlayer = ({
         </div>
         <button className="song-player__heart" onClick={addRemoveFromFavourites}>{includes ? filledHeart : emptyHeart}</button>
       </div>
-      <audio ref={audioRef} key={album.cover_medium} autoPlay muted>
+      <audio ref={audioRef} key={id} autoPlay muted>
         <source src={preview} />
       </audio>
       <div className="progress-bar">

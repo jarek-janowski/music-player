@@ -1,8 +1,12 @@
 @import '../variables.scss';
 
 .songs{
+    padding: 0 0 100px 0;
+    @media (min-width: 360px){
+        padding: 0 0 128px 0;
+    }
     &__heading{
-        color: #009FFD;
+        color: $blue;
         padding: 16px 0;
         font-size: 22px;
     }

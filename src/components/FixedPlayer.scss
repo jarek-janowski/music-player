@@ -6,11 +6,14 @@
     width: 100%;
     background: $gray;
     transition: .3s;
-    & > div{
+    & > :nth-child(1){
         width: 100%;
         display: flex;
         align-items: center;
         position: relative;
+        @media (min-width: 360px){
+            height: 80px;
+        }
     }
     &__artist{
         color: $lightgray;
@@ -18,8 +21,8 @@
     }
     &__button{
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 25%;
+        // transform: translateY(-100%);
         right: 16px;
         font-size: 16px;
         background: none;
@@ -33,16 +36,16 @@
         outline: none;
         color: $blue;
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 25%;
+        // transform: translateY(-100%);
         font-size: 16px;
-        padding: 2px;
+        // padding: 2px;
         right: 48px;
         
     }
     &__hide {
         
-        bottom: -15%
+        bottom: -20%
     }
     &__image{
         height: 100%;
@@ -72,4 +75,36 @@
         padding-right: 72px;
     }
     
+}
+
+.playlists{
+    display: flex;
+    justify-content: space-between;
+    // align-items: center;
+    height: 32px;
+    border-top: 1px solid black;
+    & > button {
+        padding: 0 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        width: 50%;
+        // background: $gray;
+        
+        border: none;
+        outline: none;
+        & > span {
+            // margin-right: 8px;
+            font-size: 10px;
+        }
+    }
+    &__chosen{
+        background: $darkblue;
+        color: $white;
+    }
+    &__no-chosen{
+         background: $gray;
+         color: $white;
+    }
 }

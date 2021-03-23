@@ -2,4 +2,11 @@
   // width: 100%;
   // margin: 0 auto;
   padding: 0 16px;
+  @media (min-width: 375px){
+    padding: 16px 16px 0;
+}
+@media (min-width: 410px){
+  padding: 24px 16px 0;
+}
+
 }

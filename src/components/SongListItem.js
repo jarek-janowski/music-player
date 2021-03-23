@@ -5,13 +5,16 @@ const SongListItem =({
   onSelect, 
   setIsPaused, 
   audioRef,
-  addToFavourites
+  addToFavourites,
+  currentPlaylist
 }) =>{
 
   const color = isCurrent ? "#009FFD" : "#EAF6FF";
   const style = { color };
   const { album, title, artist } = song
-  
+
+  const currentPlaylistAll = currentPlaylist === "all"
+
   const handlePlayPause = () =>{
     audioRef.current.play();
     setIsPaused(false)
@@ -22,6 +25,7 @@ const SongListItem =({
     item.id))
   const includes = storageSongs.includes(song.id)
 
+  const deleteIcon = <i className="fa fa-trash-o" aria-hidden="true"></i>
   const emptyHeart = <i className="fa fa-heart-o" aria-hidden="true"></i>
   const filledHeart = <i className="fa fa-heart" aria-hidden="true"></i>
 
@@ -35,7 +39,7 @@ const SongListItem =({
         <p className="song-list-item__artist">{artist.name}</p>
       </div>
       </div>
-      <button className="song-list-item__icon" onClick={() => addToFavourites(song)}>{includes ? filledHeart : emptyHeart}</button>
+      <button className="song-list-item__icon" onClick={() => addToFavourites(song)}>{currentPlaylistAll ? (includes ? filledHeart : emptyHeart) : deleteIcon}</button>
     </li>
     
     </>
