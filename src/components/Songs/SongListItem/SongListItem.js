@@ -20,15 +20,14 @@ const SongListItem =({
     setIsPaused(false)
     onSelect(song);
   }
-  
-  const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
-    item.id))
-  const includes = storageSongs.includes(song.id)
 
   const deleteIcon = <i className="fa fa-trash-o" aria-hidden="true"></i>
   const emptyHeart = <i className="fa fa-heart-o" aria-hidden="true"></i>
   const filledHeart = <i className="fa fa-heart" aria-hidden="true"></i>
 
+  const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
+    item.id))
+  const includes = storageSongs.includes(song.id)
   return (
     <>
     <li className="song-list-item">
@@ -39,7 +38,7 @@ const SongListItem =({
         <p className="song-list-item__artist">{artist.name}</p>
       </div>
       </div>
-      <button className="song-list-item__icon" onClick={() => addRemoveFavouritesFromList(song)}>{currentPlaylistAll ? (includes ? filledHeart : emptyHeart) : deleteIcon}</button>
+      <button className="song-list-item__icon" onClick={() => addRemoveFavouritesFromList(song)}>{currentPlaylistAll ? (includes ? filledHeart :emptyHeart) : deleteIcon}</button>
     </li>
     
     </>

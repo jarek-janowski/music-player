@@ -1,4 +1,4 @@
-import SongListItem from './SongListItem';
+import SongListItem from './SongListItem/SongListItem';
 import './Songs.scss'
 
 const Songs = ({ 

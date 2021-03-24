@@ -13,7 +13,7 @@ const FixedPlayer = ({
     currentPlaylist,
     data,
     favourites,
-    popOut
+    popOut,
 }) => {
     const { album, title, artist } = song
 
@@ -27,10 +27,10 @@ const FixedPlayer = ({
     const favouritesClass = currentPlaylistFavourites ? "playlists__chosen" : "playlists__no-chosen"
     const allClass = currentPlaylistAll ? "playlists__chosen" : "playlists__no-chosen"
 
-    const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map
-    (item => (item.id))
+    const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
+        item.id))
     const includes = storageSongs.includes(song.id)
-
+    
     return (
         <>
         <div className={`fixed-player ${className}`}>

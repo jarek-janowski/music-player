@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import fetchJsonp from 'fetch-jsonp'
 
-import SongPlayer from './SongPlayer';
-import Songs from './Songs';
-import FixedPlayer from './FixedPlayer'
-import Loading from './Loading'
+import SongPlayer from './SongPlayer/SongPlayer';
+import Songs from './Songs/Songs';
+import FixedPlayer from './FixedPlayer/FixedPlayer'
+import Loading from './Loading/Loading'
 
 import './App.scss';
 
@@ -53,6 +53,9 @@ function App() {
     })
     const retrievedObject = localStorage.getItem('favourites')
     setFavourites(JSON.parse(retrievedObject))
+    if(retrievedObject.length === 0){
+      localStorage.setItem('favourites', JSON.stringify([]))
+    }
   },[])
   
   useEffect(() => {
@@ -100,7 +103,7 @@ function App() {
 
   
   // if favourites empty back to all songs
-  if(currentSong === undefined && favourites.length=== 0 && data.length > 1){
+  if(currentSong === undefined && favourites.length===0 && data.length > 1){
     setSongs(data);
     setCurrentPlaylist("all");
     setProgressSongPlayer(0);
@@ -300,8 +303,6 @@ function App() {
           stopSetProgressBar={stopSetProgressBar}
           setProgressBar={setProgressBar}
           progress={progressSongPlayer}
-          // currentTime={currentTime}
-          // duration={duration}
           addRemoveFromFavourites={handleAddRemoveFavourites}
           favourites={favourites}
           currentPlaylist={currentPlaylist}

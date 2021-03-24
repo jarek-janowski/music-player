@@ -12,9 +12,7 @@ const SongPlayer = ({
   stopSetProgressBar,
   setProgressBar,
   progress,
-  // currentTime,
-  // duration,
-  addRemoveFromFavourites
+  addRemoveFromFavourites,
   }) => {
   const { preview, album, title, artist, id } = song
 
@@ -25,10 +23,6 @@ const SongPlayer = ({
   const emptyHeart = <i className="fa fa-heart-o" aria-hidden="true"></i>
   const filledHeart = <i className="fa fa-heart" aria-hidden="true"></i>
   
-  const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
-    item.id))
-  const includes = storageSongs.includes(song.id)
-
   const audioRefCurrentTime = audioRef.current === null ? "" : Math.floor(audioRef.current.currentTime)
   const audioRefDuration = audioRef.current === null ? "" : Math.floor(audioRef.current.duration)
 
@@ -36,6 +30,11 @@ const SongPlayer = ({
   const currentTimeInSeconds = audioRefCurrentTime%60 || "0";
   const currentTimeInMinutes = Math.floor(audioRefCurrentTime/60) || "0";
   const durationInMinutes = Math.floor(audioRefDuration/60) || "0";
+
+  const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
+    item.id))
+  const includes = storageSongs.includes(song.id)
+  
   return (
     <section className="song-player">
       <img
