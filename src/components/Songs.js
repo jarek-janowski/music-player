@@ -7,7 +7,7 @@ const Songs = ({
   handleSelectSong, 
   audioRef, 
   setIsPaused,
-  addToFavourites,
+  addRemoveFavouritesFromList,
   favourites,
   currentPlaylist
 }) => {
@@ -27,7 +27,7 @@ const Songs = ({
             onSelect={handleSelectSong} 
             setIsPaused={setIsPaused} 
             audioRef={audioRef}
-            addToFavourites={addToFavourites}
+            addRemoveFavouritesFromList={addRemoveFavouritesFromList}
             favourites={favourites}
             currentPlaylist={currentPlaylist}
           />))}

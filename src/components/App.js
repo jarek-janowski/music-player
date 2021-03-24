@@ -5,7 +5,6 @@ import SongPlayer from './SongPlayer';
 import Songs from './Songs';
 import FixedPlayer from './FixedPlayer'
 import Loading from './Loading'
-// import Favourites from './Favourites'
 
 import './App.scss';
 
@@ -103,9 +102,62 @@ function App() {
 
   // if favourites empty back to all songs
   if(currentSong === undefined && favourites.length=== 0 && data.length > 1){
-    setSongs(data)
-    setCurrentPlaylist("all")
+    setSongs(data);
+    setCurrentPlaylist("all");
   }
+  // on progressBar click update currentTime to clicked value
+  if(progressBarUpdateCurrentTime){
+    setProgressBarUpdateCurrentTime(false)
+    audioRef.current.currentTime = audioRef.current.duration * progressSongPlayer
+  }
+
+  //utilities functions
+  function findSelectedAudioIndex(selectedSong, songs){
+    const audioIndex = songs.findIndex(
+      song => song.preview === selectedSong.preview)
+      return audioIndex
+  }
+
+  function isStorageIncludeSong(currentSong){
+    const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
+      item.id))
+    const includes = storageSongs.includes(currentSong.id)
+    return includes
+  }
+
+  function addToStorage(songObject){
+    const arr = JSON.parse(localStorage.getItem('favourites')) || [];
+      arr.push({
+        id: songObject.id,
+        title: songObject.title,
+        
+        preview: songObject.preview,
+        album: {
+          cover_medium: songObject.album.cover_medium,
+          cover_big: songObject.album.cover_big
+        },
+        artist: {
+          name: songObject.artist.name
+        }
+      })
+      localStorage.setItem('favourites', JSON.stringify(arr))
+      const retrievedObject = localStorage.getItem('favourites')
+      setFavourites(JSON.parse(retrievedObject))
+  }
+
+  function removeFromStorage(songObject){
+    const arr = JSON.parse(localStorage.getItem('favourites')) || [];
+      const filtered = arr.filter(el => {
+        return el.id !== songObject.id
+      })
+      localStorage.setItem('favourites', JSON.stringify(filtered))
+      const retrievedObject = localStorage.getItem('favourites')
+      setFavourites(JSON.parse(retrievedObject))
+      if(currentPlaylist === "favourites"){
+        setSongs(JSON.parse(retrievedObject))
+      }
+  }
+  //app logic functions
 
   const startSetProgressBar = (e) =>{
     setSlideProgressBar(true)
@@ -117,10 +169,6 @@ function App() {
     setProgressBar(e)
   }
 
-  if(progressBarUpdateCurrentTime){
-    setProgressBarUpdateCurrentTime(false)
-    audioRef.current.currentTime = audioRef.current.duration * progressSongPlayer
-  }
   const setProgressBar = (e) =>{
     if(progressRefSongPlayer !== null){
       if(slideProgressBar){
@@ -133,20 +181,17 @@ function App() {
   }
 
   const handleSelectSong = (selectedSong) =>{
-    const audioIndex = songs.findIndex(
-      song => song.preview === selectedSong.preview)
-      // console.log(audioIndex)
-    if (audioIndex >= 0) {
-      setCurrentSongIndex(audioIndex)
+    const selectedAudioIndex = findSelectedAudioIndex(selectedSong, songs)
+    if (selectedAudioIndex >= 0) {
+      setCurrentSongIndex(selectedAudioIndex)
       audioRef.current.currentTime = 0
       setProgressSongPlayer(0)
     }
   }
 
   const handleNextSong = (selectedSong) =>{
-    const audioIndex = songs.findIndex(
-      song => song.preview === selectedSong.preview);
-    const nextAudio = audioIndex >= songs.length - 1 ? audioIndex - songs.length +1: audioIndex + 1 
+    const selectedAudioIndex = findSelectedAudioIndex(selectedSong, songs)
+    const nextAudio = selectedAudioIndex >= songs.length - 1 ? selectedAudioIndex - songs.length +1: selectedAudioIndex + 1 
       setCurrentSongIndex(nextAudio)
       setIsPaused(false)
       audioRef.current.currentTime = 0
@@ -154,9 +199,8 @@ function App() {
   }
 
   const handlePrevSong = (selectedSong) =>{
-    const audioIndex = songs.findIndex(
-      song => song.preview === selectedSong.preview);
-    const prevAudio = audioIndex <= 0 ? audioIndex + songs.length -1 : audioIndex - 1 
+    const selectedAudioIndex = findSelectedAudioIndex(selectedSong, songs)
+    const prevAudio = selectedAudioIndex <= 0 ? selectedAudioIndex + songs.length -1 : selectedAudioIndex - 1 
     setCurrentSongIndex(prevAudio) 
     setIsPaused(false)
   }
@@ -172,80 +216,24 @@ function App() {
   }
   
   const handleAddRemoveFavourites = () =>{
-    const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(item => (
-      item.id))
-    const includes = storageSongs.includes(currentSong.id)
-    
+    const includes = isStorageIncludeSong(currentSong);
     if(!includes){
-      const arr = JSON.parse(localStorage.getItem('favourites')) || [];
-      arr.push({
-        id: currentSong.id,
-        title: currentSong.title,
-        
-        preview: currentSong.preview,
-        album: {
-          cover_medium: currentSong.album.cover_medium,
-          cover_big: currentSong.album.cover_big
-        },
-        artist: {
-          name: currentSong.artist.name
-        }
-      })
-      localStorage.setItem('favourites', JSON.stringify(arr))
-      const retrievedObject = localStorage.getItem('favourites')
-      setFavourites(JSON.parse(retrievedObject))
+      addToStorage(currentSong);
     }else{
-      const arr = JSON.parse(localStorage.getItem('favourites')) || [];
-      const filtered = arr.filter(el => {
-        return el.id !== currentSong.id
-      })
-      localStorage.setItem('favourites', JSON.stringify(filtered))
-      const retrievedObject = localStorage.getItem('favourites')
-      setFavourites(JSON.parse(retrievedObject))
-      if(currentPlaylist === "favourites"){
-        setSongs(JSON.parse(retrievedObject))
-      }
+      removeFromStorage(currentSong)
     }
   }
-
-  const handleAddToFavouritesFromList = (selectedSong) => {
-    const audioIndex = songs.findIndex(
-      song => song.preview === selectedSong.preview)
-    const addToFavourites = songs[audioIndex]
-    const storageSongs = (JSON.parse(localStorage.getItem('favourites')) || []).map(
-      item => item.id)
-    const includes = storageSongs.includes(addToFavourites.id)
+ 
+  const handleAddRemoveFavouritesFromList = (selectedSong) => {
+    const selectedAudioIndex = findSelectedAudioIndex(selectedSong, songs)
+    const addToFavourites = songs[selectedAudioIndex]
+    
+    const includes = isStorageIncludeSong(addToFavourites);
 
     if(!includes){
-      const arr = JSON.parse(localStorage.getItem('favourites')) || [];
-      arr.push({
-        album: {
-          cover_medium: addToFavourites.album.cover_medium,
-          cover_big: addToFavourites.album.cover_big
-        },
-        artist: {
-          name: addToFavourites.artist.name
-        },
-        id: addToFavourites.id,
-        title: addToFavourites.title,
-        preview: addToFavourites.preview,
-        
-      })
-      localStorage.setItem('favourites', JSON.stringify(arr))
-      const retrievedObject = localStorage.getItem('favourites')
-      setFavourites(JSON.parse(retrievedObject))
+      addToStorage(addToFavourites);
     }else{
-      const arr = JSON.parse(localStorage.getItem('favourites')) || [];
-      const filtered = arr.filter(el => {
-        return el.id !== addToFavourites.id
-      })
-      
-      localStorage.setItem('favourites', JSON.stringify(filtered))
-      const retrievedObject = localStorage.getItem('favourites')
-      setFavourites(JSON.parse(retrievedObject))
-      if(currentPlaylist === "favourites"){
-        setSongs(JSON.parse(retrievedObject))
-      }
+      removeFromStorage(addToFavourites)
     }
   }
 
@@ -304,14 +292,10 @@ function App() {
           handleSelectSong={handleSelectSong}
           setIsPaused={setIsPaused}
           song={currentSong}
-          addToFavourites={handleAddToFavouritesFromList}
+          addRemoveFavouritesFromList={handleAddRemoveFavouritesFromList}
           favourites={favourites}
           currentPlaylist={currentPlaylist}
           />
-        {/* <Favourites
-          favourites={favourites}
-          removeFromFavourites={handleRemoveFromFavouritesListItem}
-        /> */}
         <FixedPlayer
           audioRef={audioRef} 
           handlePlayPause={handlePlayPauseSong}

@@ -5,7 +5,7 @@ const SongListItem =({
   onSelect, 
   setIsPaused, 
   audioRef,
-  addToFavourites,
+  addRemoveFavouritesFromList,
   currentPlaylist
 }) =>{
 
@@ -39,7 +39,7 @@ const SongListItem =({
         <p className="song-list-item__artist">{artist.name}</p>
       </div>
       </div>
-      <button className="song-list-item__icon" onClick={() => addToFavourites(song)}>{currentPlaylistAll ? (includes ? filledHeart : emptyHeart) : deleteIcon}</button>
+      <button className="song-list-item__icon" onClick={() => addRemoveFavouritesFromList(song)}>{currentPlaylistAll ? (includes ? filledHeart : emptyHeart) : deleteIcon}</button>
     </li>
     
     </>
