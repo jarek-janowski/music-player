@@ -13,13 +13,14 @@ function App() {
   const progressRefSongPlayer = useRef(null);
   const progressRefFixedPlayer = useRef(null);
   const URL = "https://api.deezer.com/playlist/8823756962/tracks?output=jsonp"
-
+  
   // prevent autoplay
   window.onload = function () {
     if(audioRef.current !== null){
     audioRef.current.autoplay = false
     }
   }
+  
   //scroll to start
   window.onbeforeunload = function () {
     window.scrollTo(0, 0);
@@ -31,8 +32,6 @@ function App() {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const currentSong = songs[currentSongIndex];
   const [isPaused, setIsPaused] = useState(true);
-  const [currentTime, setCurrentTime] = useState("0:00");
-  const [duration, setDuration] = useState("0:00");
   const [progressSongPlayer, setProgressSongPlayer] = useState(0);
   const [progressFixedPlayer, setProgressFixedPlayer] = useState(0);
   const [slideProgressBar, setSlideProgressBar] = useState(false);
@@ -55,24 +54,20 @@ function App() {
     const retrievedObject = localStorage.getItem('favourites')
     setFavourites(JSON.parse(retrievedObject))
   },[])
-
+  
   useEffect(() => {
-   
     const intervalId = setInterval(() => {
-      const parseTime = time => {
-        const seconds = String(Math.floor(time % 60) || 0).padStart('2', '0');
-        const minutes = String(Math.floor(time / 60) || 0).padStart('1', '0');
-        return `${minutes}:${seconds}`
-      }
       if(audioRef.current !== null) {
-        const {currentTime, duration, ended } = audioRef.current
-        setCurrentTime(parseTime(currentTime))
-        setDuration(parseTime(duration))
+        if(isPaused){
+          clearInterval(intervalId)
+        }
+        const { ended } = audioRef.current
         if(ended){
           audioRef.current.currentTime = 0
           handleNextSong(currentSong);
           setProgressSongPlayer(0)
           audioRef.current.play()
+          clearInterval(intervalId)
         }
         if(progressBarUpdateProgress !== audioRef.current){
           setProgressBarUpdateProgress(audioRef.current);
@@ -81,34 +76,50 @@ function App() {
               if(audioRef.current !== null){
                 const {currentTime, duration} = audioRef.current
                 setProgressSongPlayer(currentTime/duration)
-                setProgressFixedPlayer(currentTime/duration)}
+                setProgressFixedPlayer(currentTime/duration)
+                
+              }
             }
-          }) 
+          })  
         }
       }
     }, 100);
     return () => clearInterval(intervalId);
+    
   },);
 
   //show FixedPlayer 
   window.addEventListener('scroll',(e) => {
     const scrollTopTarget = e.target.scrollingElement.scrollTop;
-    if(scrollTopTarget < 187){
+    if(scrollTopTarget < 100){
       setScrollTop(false)
-    }else if (scrollTopTarget <280){
+    }else if (scrollTopTarget <700){
       setScrollTop(true)
     }
   });
 
+  
   // if favourites empty back to all songs
   if(currentSong === undefined && favourites.length=== 0 && data.length > 1){
     setSongs(data);
     setCurrentPlaylist("all");
+    setProgressSongPlayer(0);
+    setProgressFixedPlayer(0);
+    if(audioRef.current !== null){
+      setIsPaused(true);
+      audioRef.current.currentTime = 0;
+      audioRef.current.pause();
+    }
   }
+
   // on progressBar click update currentTime to clicked value
   if(progressBarUpdateCurrentTime){
     setProgressBarUpdateCurrentTime(false)
     audioRef.current.currentTime = audioRef.current.duration * progressSongPlayer
+  }
+
+  if(isPaused && audioRef.current !== null){
+    audioRef.current.pause();
   }
 
   //utilities functions
@@ -155,6 +166,10 @@ function App() {
       setFavourites(JSON.parse(retrievedObject))
       if(currentPlaylist === "favourites"){
         setSongs(JSON.parse(retrievedObject))
+        if(currentSongIndex > 0){
+        setCurrentSongIndex(currentSongIndex -1)
+      }
+      audioRef.current.play()
       }
   }
   //app logic functions
@@ -179,28 +194,33 @@ function App() {
       }
     }
   }
-
   const handleSelectSong = (selectedSong) =>{
     const selectedAudioIndex = findSelectedAudioIndex(selectedSong, songs)
     if (selectedAudioIndex >= 0) {
       setCurrentSongIndex(selectedAudioIndex)
-      audioRef.current.currentTime = 0
-      setProgressSongPlayer(0)
+      audioRef.current.play();
+      setProgressSongPlayer(0);
+      setIsPaused(false);
+    }
+    if(!isPaused){
+      audioRef.current.pause();
+      setIsPaused(true);
+    }
+    if(selectedAudioIndex !== currentSongIndex){
+      audioRef.current.play();
+      setIsPaused(false);
     }
   }
-
-  const handleNextSong = (selectedSong) =>{
-    const selectedAudioIndex = findSelectedAudioIndex(selectedSong, songs)
-    const nextAudio = selectedAudioIndex >= songs.length - 1 ? selectedAudioIndex - songs.length +1: selectedAudioIndex + 1 
-      setCurrentSongIndex(nextAudio)
-      setIsPaused(false)
-      audioRef.current.currentTime = 0
-      setProgressSongPlayer(0)
+  const handleNextSong =  () =>{
+    const nextAudio = currentSongIndex >= songs.length - 1 ? currentSongIndex - songs.length +1: currentSongIndex + 1 
+      setCurrentSongIndex(nextAudio);
+      setIsPaused(false);
+      audioRef.current.currentTime = 0;
+      setProgressSongPlayer(0);
   }
 
-  const handlePrevSong = (selectedSong) =>{
-    const selectedAudioIndex = findSelectedAudioIndex(selectedSong, songs)
-    const prevAudio = selectedAudioIndex <= 0 ? selectedAudioIndex + songs.length -1 : selectedAudioIndex - 1 
+  const handlePrevSong = () =>{
+    const prevAudio = currentSongIndex <= 0 ? currentSongIndex + songs.length -1 : currentSongIndex - 1 
     setCurrentSongIndex(prevAudio) 
     setIsPaused(false)
   }
@@ -241,11 +261,12 @@ function App() {
     if(favourites.length > 0){
       setSongs(favourites);
       setCurrentSongIndex(0);
-      setIsPaused(false);
+      setIsPaused(true);
       setCurrentPlaylist("favourites");
-      audioRef.current.currentTime = 0;
-      audioRef.current.play()
       setPopOut(false);
+      setProgressSongPlayer(0);
+      setProgressFixedPlayer(0);
+      audioRef.current.currentTime = 0;
     }else {
       setPopOut(true);
     }
@@ -254,10 +275,11 @@ function App() {
   const handlePlayAll = () => {
     setSongs(data);
     setCurrentSongIndex(0);
-    setIsPaused(false);
+    setIsPaused(true);
     setCurrentPlaylist("all");
+    setProgressSongPlayer(0);
+    setProgressFixedPlayer(0);
     audioRef.current.currentTime = 0;
-    audioRef.current.play()
   } 
 
   return (
@@ -278,8 +300,8 @@ function App() {
           stopSetProgressBar={stopSetProgressBar}
           setProgressBar={setProgressBar}
           progress={progressSongPlayer}
-          currentTime={currentTime}
-          duration={duration}
+          // currentTime={currentTime}
+          // duration={duration}
           addRemoveFromFavourites={handleAddRemoveFavourites}
           favourites={favourites}
           currentPlaylist={currentPlaylist}

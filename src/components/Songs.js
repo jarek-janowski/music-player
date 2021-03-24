@@ -9,7 +9,7 @@ const Songs = ({
   setIsPaused,
   addRemoveFavouritesFromList,
   favourites,
-  currentPlaylist
+  currentPlaylist,
 }) => {
   
 

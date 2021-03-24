@@ -12,14 +12,10 @@ const SongPlayer = ({
   stopSetProgressBar,
   setProgressBar,
   progress,
-  currentTime,
-  duration,
-  addRemoveFromFavourites,
-  currentPlaylist,
-  favourites,
-  data
+  // currentTime,
+  // duration,
+  addRemoveFromFavourites
   }) => {
-  
   const { preview, album, title, artist, id } = song
 
   const previousIcon = <i className="fa fa-step-backward" aria-hidden="true"></i>
@@ -33,6 +29,13 @@ const SongPlayer = ({
     item.id))
   const includes = storageSongs.includes(song.id)
 
+  const audioRefCurrentTime = audioRef.current === null ? "" : Math.floor(audioRef.current.currentTime)
+  const audioRefDuration = audioRef.current === null ? "" : Math.floor(audioRef.current.duration)
+
+  const durationInSeconds = audioRefDuration%60 || "0";
+  const currentTimeInSeconds = audioRefCurrentTime%60 || "0";
+  const currentTimeInMinutes = Math.floor(audioRefCurrentTime/60) || "0";
+  const durationInMinutes = Math.floor(audioRefDuration/60) || "0";
   return (
     <section className="song-player">
       <img
@@ -48,7 +51,7 @@ const SongPlayer = ({
         </div>
         <button className="song-player__heart" onClick={addRemoveFromFavourites}>{includes ? filledHeart : emptyHeart}</button>
       </div>
-      <audio ref={audioRef} key={id} autoPlay muted>
+      <audio ref={audioRef} key={id} autoPlay>
         <source src={preview} />
       </audio>
       <div className="progress-bar">
@@ -64,8 +67,8 @@ const SongPlayer = ({
         </div>
       </div>
       <div className="timers-wrapper">
-        <span className="timers timers--current-time">{currentTime}</span>
-        <span className="timers timers--duration">{duration}</span>
+        <span className="timers timers--current-time">{currentTimeInMinutes}:{currentTimeInSeconds < 10 ? `0${currentTimeInSeconds}` : currentTimeInSeconds}</span>
+        <span className="timers timers--duration">{durationInMinutes}:{durationInSeconds < 10 ? `0${durationInSeconds}` : durationInSeconds}</span>
       </div>
       <div className="song-player__controls">
         <div className="button-wrapper">
