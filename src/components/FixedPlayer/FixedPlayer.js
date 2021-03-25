@@ -48,7 +48,7 @@ const FixedPlayer = ({
                 <button className="fixed-player__button" onClick={handlePlayPause}>{isPaused ? playIcon : pauseIcon}</button>
             <div className="playlists">
                 <button className={allClass} onClick={playAll}>All songs {`(${data.length})`}<span>{currentPlaylistAll ? "" : playIcon}</span></button>
-                <button className={favouritesClass} onClick={playFavourites}>Favourites {`(${favourites.length})`}<span>{currentPlaylistFavourites ? "" : playIcon}</span></button>
+                <button className={favouritesClass} onClick={playFavourites}>Favourites {`(${favourites === null ? "0" :favourites.length})`}<span>{currentPlaylistFavourites ? "" : playIcon}</span></button>
             </div>
         </div>
         {popOut ? <div className="pop-out">Favourites is empty</div> : ""}

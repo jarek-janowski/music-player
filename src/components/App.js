@@ -53,9 +53,10 @@ function App() {
     })
     const retrievedObject = localStorage.getItem('favourites')
     setFavourites(JSON.parse(retrievedObject))
-    if(retrievedObject.length === 0){
+    if(retrievedObject===null){
       localStorage.setItem('favourites', JSON.stringify([]))
     }
+    
   },[])
   
   useEffect(() => {
@@ -103,6 +104,7 @@ function App() {
 
   
   // if favourites empty back to all songs
+  if(favourites !== null){
   if(currentSong === undefined && favourites.length===0 && data.length > 1){
     setSongs(data);
     setCurrentPlaylist("all");
@@ -114,6 +116,7 @@ function App() {
       audioRef.current.pause();
     }
   }
+}
 
   // on progressBar click update currentTime to clicked value
   if(progressBarUpdateCurrentTime){
