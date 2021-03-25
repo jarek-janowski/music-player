@@ -307,6 +307,8 @@ function App() {
           favourites={favourites}
           currentPlaylist={currentPlaylist}
           data={data}
+          songs={songs}
+          setCurrentSongIndex={setCurrentSongIndex}
         />
         <Songs
           audioRef={audioRef} 

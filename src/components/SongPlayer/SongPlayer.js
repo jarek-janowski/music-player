@@ -35,12 +35,13 @@ const SongPlayer = ({
     item.id))
   const includes = storageSongs.includes(song.id)
   
+ 
   return (
     <section className="song-player">
-      <img
-        className="song-player__image"
-        src={album.cover_big}
-        alt={`${title} cover`} />
+        <img
+          className="song-player__image"
+          src={album.cover_big}
+          alt={`${title} cover`} />
       <div className="info-wrapper">
         <div>
         <h2 className={title.length > 25 ? "song-player__title--if-length" : "song-player__title"}>
