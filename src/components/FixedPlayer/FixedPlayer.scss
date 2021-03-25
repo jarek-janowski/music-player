@@ -7,6 +7,7 @@
     background: $gray;
     transition: .3s;
     z-index: 2;
+    // height: 20%;
     @media (min-width: 640px){
         position: static;
         bottom: 0;
@@ -17,6 +18,7 @@
         display: flex;
         align-items: center;
         position: relative;
+        height: 64px;
         @media (min-width: 360px){
             height: 80px;
         }
@@ -64,7 +66,7 @@
     }
     &__hide {
         
-        bottom: -20%
+        bottom: -25%
     }
     &__image{
         width: 64px;
@@ -114,7 +116,9 @@
     justify-content: space-between;
     height: 32px;
     border-top: 1px solid black;
-    
+    @media(min-width: 360px){
+        height: 48px;
+    }
     @media (min-width: 640px){
         position: sticky;
         top: 16px;
@@ -136,7 +140,7 @@
         align-items: center;
         justify-content: space-between;
         height: 100%;
-        width: 180px;
+        width: 50%;
         border: none;
         outline: none;
         cursor: pointer;
