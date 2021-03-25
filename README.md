@@ -1,7 +1,9 @@
 View this project live at [Github Pages.](https://jarek-janowski.github.io/music-player/)
 
+## DEKSTOP
 ![cover](./gh/music-player-pc.jpg)
 
+## MOBILE
 ![cover](./gh/music-player-mobile.jpg)
 
 # music-player
