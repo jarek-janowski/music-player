@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import fetchJsonp from 'fetch-jsonp'
+
 
 import SongPlayer from './SongPlayer/SongPlayer';
 import Songs from './Songs/Songs';
@@ -12,8 +12,7 @@ function App() {
   const audioRef = useRef(null);
   const progressRefSongPlayer = useRef(null);
   const progressRefFixedPlayer = useRef(null);
-  const URL = "https://api.deezer.com/playlist/8823756962/tracks?output=jsonp"
-  
+  const URL= "https://music-api-j95.herokuapp.com/songs";
   // prevent autoplay
   window.onload = function () {
     if(audioRef.current !== null){
@@ -41,16 +40,17 @@ function App() {
   const [favourites, setFavourites] = useState([]);
 
   useEffect(() => {
-    fetchJsonp(URL)
+    fetch(URL)
     .then(response => {
       if (response.ok){
         response.json()
         .then(data =>{
-          setData(data.data)
-          setSongs(data.data)
+          setData(data.songs)
+          setSongs(data.songs)
         })
       }
     })
+  
     const retrievedObject = localStorage.getItem('favourites')
     setFavourites(JSON.parse(retrievedObject))
     if(retrievedObject===null){
@@ -131,7 +131,7 @@ function App() {
   //utilities functions
   function findSelectedAudioIndex(selectedSong, songs){
     const audioIndex = songs.findIndex(
-      song => song.preview === selectedSong.preview)
+      song => song.audioUrl === selectedSong.audioUrl)
       return audioIndex
   }
 
@@ -145,17 +145,11 @@ function App() {
   function addToStorage(songObject){
     const arr = JSON.parse(localStorage.getItem('favourites')) || [];
       arr.push({
+        artist: songObject.artist,
+        audioUrl: songObject.audioUrl,
+        cover: songObject.cover,
         id: songObject.id,
-        title: songObject.title,
-        
-        preview: songObject.preview,
-        album: {
-          cover_medium: songObject.album.cover_medium,
-          cover_big: songObject.album.cover_big
-        },
-        artist: {
-          name: songObject.artist.name
-        }
+        title: songObject.title
       })
       localStorage.setItem('favourites', JSON.stringify(arr))
       const retrievedObject = localStorage.getItem('favourites')

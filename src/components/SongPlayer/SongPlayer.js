@@ -14,7 +14,7 @@ const SongPlayer = ({
   progress,
   addRemoveFromFavourites,
   }) => {
-  const { preview, album, title, artist, id } = song
+  const { audioUrl, cover, title, artist, id } = song
 
   const previousIcon = <i className="fa fa-step-backward" aria-hidden="true"></i>
   const nextIcon = <i className="fa fa-step-forward" aria-hidden="true"></i>
@@ -37,22 +37,23 @@ const SongPlayer = ({
   
  
   return (
+    
     <section className="song-player">
         <img
           className="song-player__image"
-          src={album.cover_big}
+          src={cover}
           alt={`${title} cover`} />
       <div className="info-wrapper">
         <div>
         <h2 className={title.length > 25 ? "song-player__title--if-length" : "song-player__title"}>
           <span className={title.length > 25 ? "song-player__title--if-length--animation" : ""}>{title}</span>
         </h2>
-        <p className="song-player__artist">{artist.name}</p>
+        <p className="song-player__artist">{artist}</p>
         </div>
         <button className="song-player__heart" onClick={addRemoveFromFavourites}>{includes ? filledHeart : emptyHeart}</button>
       </div>
       <audio ref={audioRef} key={id} autoPlay>
-        <source src={preview} />
+        <source src={audioUrl} />
       </audio>
       <div className="progress-bar">
         <div

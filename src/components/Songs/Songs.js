@@ -23,7 +23,7 @@ const Songs = ({
           <SongListItem
             key={song.id}
             song={song}
-            isCurrent={song.preview === currentSong.preview}
+            isCurrent={song.audioUrl === currentSong.audioUrl}
             onSelect={handleSelectSong} 
             setIsPaused={setIsPaused} 
             audioRef={audioRef}

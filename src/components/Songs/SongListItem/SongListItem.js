@@ -11,7 +11,7 @@ const SongListItem =({
 
   const color = isCurrent ? "#009FFD" : "#EAF6FF";
   const style = { color };
-  const { album, title, artist } = song
+  const { cover, title, artist } = song
 
   const currentPlaylistAll = currentPlaylist === "all"
 
@@ -32,10 +32,10 @@ const SongListItem =({
     <>
     <li className="song-list-item">
       <div onClick={handlePlayPause} >
-      <img className="song-list-item__image"src={album.cover_medium} alt={`${title} cover`}/>
+      <img className="song-list-item__image"src={cover} alt={`${title} cover`}/>
       <div className="title-artist-wrapper">
         <p className="song-list-item__title"style={style}>{title}</p>
-        <p className="song-list-item__artist">{artist.name}</p>
+        <p className="song-list-item__artist">{artist}</p>
       </div>
       </div>
       <button className="song-list-item__icon" onClick={() => addRemoveFavouritesFromList(song)}>{currentPlaylistAll ? (includes ? filledHeart :emptyHeart) : deleteIcon}</button>

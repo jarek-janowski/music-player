@@ -15,7 +15,7 @@ const FixedPlayer = ({
     favourites,
     popOut,
 }) => {
-    const { album, title, artist } = song
+    const { cover, title, artist } = song
 
     const pauseIcon = <i className="fa fa-pause" aria-hidden="true"></i>
     const playIcon = <i className="fa fa-play" aria-hidden="true"></i>
@@ -38,10 +38,10 @@ const FixedPlayer = ({
                 <div ref={progressRef} className="fixed-player__progress-container" >
                     <div style={{width: (progress * 100) + '%'}}></div>
                 </div>
-                <img onClick={() => window.scrollTo(0, 0)} className="fixed-player__image" src={album.cover_medium} alt={`${title} cover`}/>
+                <img onClick={() => window.scrollTo(0, 0)} className="fixed-player__image" src={cover} alt={`${title} cover`}/>
                 <div onClick={() => window.scrollTo(0, 0)} className="fixed-player__info">
                     <h3 className="fixed-player__title">{title}</h3>
-                    <p className="fixed-player__artist">{artist.name}</p>
+                    <p className="fixed-player__artist">{artist}</p>
                 </div>
             </div>
                 <button className="fixed-player__heart"onClick={addRemoveFromFavourites}>{includes ? filledHeart : emptyHeart}</button>

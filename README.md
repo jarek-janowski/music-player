@@ -17,7 +17,6 @@ Music player with custom controls & favourites playlist
 - React Hooks
 - JS Locale Storage
 - sass/scss
-- fetch JSONP
 - Deezer API
 - PWA
 
