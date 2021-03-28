@@ -17,7 +17,7 @@ Player is connected with my [api](https://github.com/jarek-janowski/music-api), 
 - React Hooks
 - JS Locale Storage
 - sass/scss
-- my own simple[api](https://github.com/jarek-janowski/music-api)
+- my own simple [api](https://github.com/jarek-janowski/music-api)
 - PWA
 
 ## Available scripts

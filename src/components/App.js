@@ -70,7 +70,6 @@ function App() {
           audioRef.current.currentTime = 0
           handleNextSong(currentSong);
           setProgressSongPlayer(0)
-          audioRef.current.play()
           clearInterval(intervalId)
         }
         if(progressBarUpdateProgress !== audioRef.current){
@@ -194,11 +193,12 @@ function App() {
       }
     }
   }
+  
   const handleSelectSong = (selectedSong) =>{
     const selectedAudioIndex = findSelectedAudioIndex(selectedSong, songs)
     if (selectedAudioIndex >= 0) {
       setCurrentSongIndex(selectedAudioIndex)
-      audioRef.current.play();
+      // audioRef.current.play();
       setProgressSongPlayer(0);
       setIsPaused(false);
     }

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import './SongPlayer.scss'
 
 const SongPlayer = ({ 
@@ -35,7 +36,25 @@ const SongPlayer = ({
     item.id))
   const includes = storageSongs.includes(song.id)
   
- 
+  const [startAnimation, setStartAnimation] = useState(24)
+  const width = window.screen.width
+
+  useEffect(() => {
+    if(width >= 360){
+      setStartAnimation(28)
+    }
+    if(width >= 410){
+      setStartAnimation(35)
+    }
+    if(width >= 1080){
+      setStartAnimation(36)
+    }
+    if(width >= 1366){
+      setStartAnimation(39)
+    }
+  }, [width]);
+  
+    
   return (
     
     <section className="song-player">
@@ -45,15 +64,15 @@ const SongPlayer = ({
           alt={`${title} cover`} />
       <div className="info-wrapper">
         <div>
-        <h2 className={title.length > 25 ? "song-player__title--if-length" : "song-player__title"}>
-          <span className={title.length > 25 ? "song-player__title--if-length--animation" : ""}>{title}</span>
+        <h2 className={title.length > startAnimation ? "song-player__title--if-length" : "song-player__title"}>
+          <span className={title.length > startAnimation ? "song-player__title--if-length--animation" : ""}>{title}</span>
         </h2>
         <p className="song-player__artist">{artist}</p>
         </div>
         <button className="song-player__heart" onClick={addRemoveFromFavourites}>{includes ? filledHeart : emptyHeart}</button>
       </div>
-      <audio ref={audioRef} key={id} autoPlay>
-        <source src={audioUrl} />
+      <audio ref={audioRef} key={id} autoPlay preload="metadata" src={audioUrl} type="audio/mpeg">
+        {/* <source  /> */}
       </audio>
       <div className="progress-bar">
         <div

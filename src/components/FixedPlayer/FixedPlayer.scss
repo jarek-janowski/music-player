@@ -8,6 +8,7 @@
     transition: .3s;
     z-index: 2;
     // height: 20%;
+    border-bottom: 1px solid black;
     @media (min-width: 640px){
         position: static;
         bottom: 0;
@@ -94,7 +95,10 @@
         
     }
     &__show{
-        bottom: 0;
+        bottom: 32px;
+        @media(min-width: 360px){
+            bottom: 47px
+        }
     }
   
     &__title{
@@ -115,7 +119,13 @@
     display: flex;
     justify-content: space-between;
     height: 32px;
-    border-top: 1px solid black;
+    // border-top: 1px solid black;
+    background: $gray;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
     @media(min-width: 360px){
         height: 48px;
     }
@@ -126,7 +136,7 @@
         flex-direction: column;
         justify-content: center;
         height: 100px;
-        border: none;
+        // border: none;
         background: none;
         grid-column-start: 1;
         grid-column-end: 1;
