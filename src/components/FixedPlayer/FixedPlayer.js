@@ -32,28 +32,28 @@ const FixedPlayer = ({
     const includes = storageSongs.includes(song.id)
     
     return (
-        <>
-        <div className={`fixed-player ${className}`}>
-            <div >
-                <div ref={progressRef} className="fixed-player__progress-container" >
-                    <div style={{width: (progress * 100) + '%'}}></div>
+        <section>
+            <div className={`fixed-player ${className}`}>
+                <div >
+                    <div ref={progressRef} className="fixed-player__progress-container" >
+                        <div style={{width: (progress * 100) + '%'}}></div>
+                    </div>
+                    <img onClick={() => window.scrollTo(0, 0)} className="fixed-player__image" src={cover} alt={`${title} cover`}/>
+                    <div onClick={() => window.scrollTo(0, 0)} className="fixed-player__info">
+                        <h3 className="fixed-player__title">{title}</h3>
+                        <p className="fixed-player__artist">{artist}</p>
+                    </div>
                 </div>
-                <img onClick={() => window.scrollTo(0, 0)} className="fixed-player__image" src={cover} alt={`${title} cover`}/>
-                <div onClick={() => window.scrollTo(0, 0)} className="fixed-player__info">
-                    <h3 className="fixed-player__title">{title}</h3>
-                    <p className="fixed-player__artist">{artist}</p>
-                </div>
+                    <button className="fixed-player__heart"onClick={addRemoveFromFavourites}>{includes ? filledHeart : emptyHeart}</button>
+                    <button className="fixed-player__button" onClick={handlePlayPause}>{isPaused ? playIcon : pauseIcon}</button>
+            
             </div>
-                <button className="fixed-player__heart"onClick={addRemoveFromFavourites}>{includes ? filledHeart : emptyHeart}</button>
-                <button className="fixed-player__button" onClick={handlePlayPause}>{isPaused ? playIcon : pauseIcon}</button>
-           
-        </div>
-        <div className="playlists">
-            <button className={allClass} onClick={playAll}>All songs {`(${data.length})`}<span>{currentPlaylistAll ? "" : playIcon}</span></button>
-            <button className={favouritesClass} onClick={playFavourites}>Favourites {`(${favourites === null ? "0" :favourites.length})`}<span>{currentPlaylistFavourites ? "" : playIcon}</span></button>
-        </div>
-        {popOut ? <div className="pop-out">Favourites is empty</div> : ""}
-        </>
+            <div className="playlists">
+                <button className={allClass} onClick={playAll}>All songs {`(${data.length})`}<span>{currentPlaylistAll ? "" : playIcon}</span></button>
+                <button className={favouritesClass} onClick={playFavourites}>Favourites {`(${favourites === null ? "0" :favourites.length})`}<span>{currentPlaylistFavourites ? "" : playIcon}</span></button>
+            </div>
+            {popOut ? <div className="pop-out">Favourites is empty</div> : ""}
+        </section>
     );
 }
  

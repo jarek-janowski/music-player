@@ -105,11 +105,12 @@
         width: 90%;
         padding: 9.5px 0;
         overflow: hidden;
+        
         &--animation{
             position: absolute;
             transform: translateY(-50%);
-            width: 500px;
-            animation: text-slide 8s linear infinite both;
+            width: 150%;
+            animation: text-slide 10s linear infinite both; 
         }
     }
  
@@ -120,7 +121,6 @@
         color: $white;
     }
     
-
 }
 .button-wrapper{
     display: flex;
@@ -240,11 +240,12 @@
 
 @keyframes text-slide {
     from{
-        left:70%
+        left:100%
     }
     to{
-        left: calc(0% - 350px);
+        left: -110%
     }
 }
+
 
  

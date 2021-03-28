@@ -65,7 +65,7 @@ const SongPlayer = ({
       <div className="info-wrapper">
         <div>
         <h2 className={title.length > startAnimation ? "song-player__title--if-length" : "song-player__title"}>
-          <span className={title.length > startAnimation ? "song-player__title--if-length--animation" : ""}>{title}</span>
+          <div className={title.length > startAnimation ? "song-player__title--if-length--animation" : ""}>{title}</div>
         </h2>
         <p className="song-player__artist">{artist}</p>
         </div>
